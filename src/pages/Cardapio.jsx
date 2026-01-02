@@ -37,59 +37,79 @@ const Cardapio = () => {
     setError(null)
     
     const maxRetries = 2
-    const timeout = 5000 // 5 segundos
+    const timeout = 10000 // 10 segundos (aumentado)
 
     try {
       // URL do cardápio Next.js (porta 3007)
       const cardapioUrl = `http://${window.location.hostname}:3007`
+      console.log('Carregando dados do cardápio de:', cardapioUrl)
       
-      const fetchWithTimeout = (fetchPromise) => {
+      const fetchWithTimeout = (url, options) => {
+        const fetchPromise = fetch(url, options)
         return Promise.race([
           fetchPromise,
           new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('Timeout')), timeout)
+            setTimeout(() => reject(new Error(`Timeout ao buscar ${url}`)), timeout)
           )
         ])
       }
 
+      const dishesUrl = `${cardapioUrl}/api/dishes/public`
+      const beveragesUrl = `${cardapioUrl}/api/beverages/public`
+      
+      console.log('Buscando pratos de:', dishesUrl)
+      console.log('Buscando bebidas de:', beveragesUrl)
+
       const [dishesRes, beveragesRes] = await Promise.all([
-        fetchWithTimeout(
-          fetch(`${cardapioUrl}/api/dishes/public`, { 
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-            mode: 'cors'
-          })
-        ),
-        fetchWithTimeout(
-          fetch(`${cardapioUrl}/api/beverages/public`, { 
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-            mode: 'cors'
-          })
-        ),
+        fetchWithTimeout(dishesUrl, { 
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          mode: 'cors'
+        }),
+        fetchWithTimeout(beveragesUrl, { 
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          mode: 'cors'
+        }),
       ])
 
-      if (!dishesRes.ok || !beveragesRes.ok) {
-        throw new Error('Erro ao carregar dados da API')
+      console.log('Resposta pratos:', dishesRes.status, dishesRes.statusText)
+      console.log('Resposta bebidas:', beveragesRes.status, beveragesRes.statusText)
+
+      if (!dishesRes.ok) {
+        const errorText = await dishesRes.text()
+        console.error('Erro na resposta de pratos:', errorText)
+        throw new Error(`Erro ao carregar pratos: ${dishesRes.status} ${dishesRes.statusText}`)
+      }
+
+      if (!beveragesRes.ok) {
+        const errorText = await beveragesRes.text()
+        console.error('Erro na resposta de bebidas:', errorText)
+        throw new Error(`Erro ao carregar bebidas: ${beveragesRes.status} ${beveragesRes.statusText}`)
       }
 
       const dishesData = await dishesRes.json()
       const beveragesData = await beveragesRes.json()
 
+      console.log('Pratos recebidos:', dishesData)
+      console.log('Bebidas recebidas:', beveragesData)
+
       setDishes(Array.isArray(dishesData) ? dishesData : [])
       setBeverages(Array.isArray(beveragesData) ? beveragesData : [])
     } catch (error) {
-      console.error('Erro ao carregar dados:', error)
+      console.error('Erro ao carregar dados do cardápio:', error)
+      console.error('Detalhes do erro:', error.message, error.stack)
       
       // Tentar novamente se ainda houver tentativas
       if (retryCount < maxRetries) {
+        console.log(`Tentando novamente... (${retryCount + 1}/${maxRetries})`)
         setTimeout(() => {
           loadData(retryCount + 1)
-        }, 1000 * (retryCount + 1)) // Aumentar o delay a cada tentativa
+        }, 2000 * (retryCount + 1)) // Aumentar o delay a cada tentativa
         return
       }
       
-      setError('Erro ao carregar o cardápio. Verifique se o servidor está rodando.')
+      setError(`Erro ao carregar o cardápio: ${error.message}. Verifique se o servidor está rodando.`)
       setDishes([])
       setBeverages([])
     } finally {
