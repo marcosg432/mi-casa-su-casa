@@ -35,7 +35,7 @@ const Cardapio = () => {
 
       // Tentar múltiplas URLs possíveis para o cardápio Next.js
       const possibleUrls = [
-        `http://${window.location.hostname}:3001`, // Mesma máquina, porta 3001
+        `http://${window.location.hostname}:3006`, // Mesma máquina, porta 3006
         window.location.origin, // Mesma origem
         '/api', // URL relativa (proxy)
       ]

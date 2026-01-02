@@ -2,7 +2,7 @@ module.exports = {
   apps: [{
     name: 'cardapio',
     script: 'node_modules/.bin/next',
-    args: 'start -p 3001',
+    args: 'start -p 3006',
     cwd: '/root/mi-casa-su-casa/cardapio',
     instances: 1,
     autorestart: true,
@@ -10,7 +10,7 @@ module.exports = {
     max_memory_restart: '1G',
     env: {
       NODE_ENV: 'production',
-      PORT: 3001
+      PORT: 3006
     },
     error_file: './logs/cardapio-err.log',
     out_file: './logs/cardapio-out.log',

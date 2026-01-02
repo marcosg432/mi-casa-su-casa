@@ -51,7 +51,7 @@ echo -e "${YELLOW}🛑 Parando instâncias anteriores do cardápio...${NC}"
 pm2 delete cardapio 2>/dev/null || true
 
 # Iniciar com PM2
-echo -e "${YELLOW}▶️  Iniciando cardápio com PM2 na porta 3001...${NC}"
+echo -e "${YELLOW}▶️  Iniciando cardápio com PM2 na porta 3006...${NC}"
 pm2 start ecosystem-cardapio.config.cjs
 
 # Salvar configuração do PM2
@@ -68,6 +68,6 @@ echo ""
 echo "📝 Para ver os logs:"
 echo "   pm2 logs cardapio"
 echo ""
-echo "🌐 Cardápio rodando em: http://193.160.119.67:3001"
+echo "🌐 Cardápio rodando em: http://193.160.119.67:3006"
 echo ""
 
