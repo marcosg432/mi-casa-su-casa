@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { fetchApi } from '../utils/api'
 import styles from '../styles/Cardapio.module.css'
 
 const Cardapio = () => {
@@ -41,11 +40,9 @@ const Cardapio = () => {
     const timeout = 5000 // 5 segundos
 
     try {
-<<<<<<< HEAD
       // URL do cardápio Next.js (porta 3007)
       const cardapioUrl = `http://${window.location.hostname}:3007`
       
-=======
       const fetchWithTimeout = (fetchPromise) => {
         return Promise.race([
           fetchPromise,
@@ -55,10 +52,21 @@ const Cardapio = () => {
         ])
       }
 
->>>>>>> 5aae0cdce6422c8e5f27de3d890ca8a6d2559949
       const [dishesRes, beveragesRes] = await Promise.all([
-        fetchWithTimeout(fetchApi('/dishes/public', { method: 'GET' })),
-        fetchWithTimeout(fetchApi('/beverages/public', { method: 'GET' })),
+        fetchWithTimeout(
+          fetch(`${cardapioUrl}/api/dishes/public`, { 
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            mode: 'cors'
+          })
+        ),
+        fetchWithTimeout(
+          fetch(`${cardapioUrl}/api/beverages/public`, { 
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            mode: 'cors'
+          })
+        ),
       ])
 
       if (!dishesRes.ok || !beveragesRes.ok) {
