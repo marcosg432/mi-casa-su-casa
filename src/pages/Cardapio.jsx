@@ -28,8 +28,8 @@ const Cardapio = () => {
 
   const loadData = async () => {
     try {
-      // URL do cardápio Next.js (porta 3006)
-      const cardapioUrl = `http://${window.location.hostname}:3006`
+      // URL do cardápio Next.js (porta 3007)
+      const cardapioUrl = `http://${window.location.hostname}:3007`
       
       const [dishesRes, beveragesRes] = await Promise.all([
         fetch(`${cardapioUrl}/api/dishes/public`, { 
