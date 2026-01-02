@@ -41,9 +41,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         display_order INTEGER DEFAULT 0,
         status TEXT DEFAULT 'active',
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME,
         FOREIGN KEY (category_id) REFERENCES categories(id)
       )
     `);
+    
+    // Adicionar coluna updated_at se não existir (migração)
+    try {
+      await run(`ALTER TABLE dishes ADD COLUMN updated_at DATETIME`);
+    } catch (e: any) {
+      // Ignorar se a coluna já existe
+      if (!e.message?.includes('duplicate column')) {
+        console.log('Coluna updated_at já existe ou erro ao adicionar:', e.message);
+      }
+    }
 
     // Criar tabela de bebidas
     await run(`
@@ -57,9 +68,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         display_order INTEGER DEFAULT 0,
         status TEXT DEFAULT 'active',
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME,
         FOREIGN KEY (category_id) REFERENCES categories(id)
       )
     `);
+    
+    // Adicionar coluna updated_at se não existir (migração)
+    try {
+      await run(`ALTER TABLE beverages ADD COLUMN updated_at DATETIME`);
+    } catch (e: any) {
+      // Ignorar se a coluna já existe
+      if (!e.message?.includes('duplicate column')) {
+        console.log('Coluna updated_at já existe ou erro ao adicionar:', e.message);
+      }
+    }
 
     // Criar tabela de fichas de pedidos
     await run(`
