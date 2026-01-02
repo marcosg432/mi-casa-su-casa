@@ -6,6 +6,7 @@ const AdminHeader = ({ currentPage }) => {
     <header className="admin-header">
       <div className="admin-header-top">
         <Link to="/admin" className="admin-logo">
+          <img src="/icones/logo boa.png" className="admin-logo-icon" alt="Pousada Mi Casa Sua Casa Logo" />
           <span className="admin-logo-text">pousada mi casa sua casa</span>
         </Link>
       </div>
