@@ -1,8 +1,8 @@
 module.exports = {
   apps: [{
     name: 'brisa-azul',
-    script: 'npm',
-    args: 'run preview -- --port 3000 --host',
+    script: 'node_modules/.bin/vite',
+    args: 'preview --port 3000 --host 0.0.0.0',
     cwd: process.cwd(),
     instances: 1,
     autorestart: true,
@@ -15,7 +15,8 @@ module.exports = {
     error_file: './logs/err.log',
     out_file: './logs/out.log',
     log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
-    merge_logs: true
+    merge_logs: true,
+    time: true
   }]
 }
 

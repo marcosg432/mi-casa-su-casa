@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # Script de Deploy para Hostinger com PM2
-# Portas disponíveis: 3000, 3002 (evitando 3001 e 3005)
+# Porta padrão: 3000
+# Portas bloqueadas: 3001, 3002, 3003, 3004, 3005
+# Alternativa: 3006 (se 3000 estiver ocupada)
 
 echo "🚀 Iniciando deploy do Brisa Azul na Hostinger..."
 
@@ -39,7 +41,7 @@ pm2 delete brisa-azul 2>/dev/null || true
 
 # Iniciar com PM2
 echo -e "${YELLOW}▶️  Iniciando aplicação com PM2 na porta 3000...${NC}"
-pm2 start ecosystem.config.js
+pm2 start ecosystem.config.cjs
 
 # Salvar configuração do PM2
 echo -e "${YELLOW}💾 Salvando configuração do PM2...${NC}"

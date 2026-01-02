@@ -9,8 +9,20 @@ export default defineConfig({
     open: true
   },
   preview: {
-    host: true,
-    port: 3000
+    host: '0.0.0.0', // Permite acesso externo
+    port: 3000,
+    strictPort: false // Permite usar outra porta se 3000 estiver ocupada
+  },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
+    minify: 'terser',
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
   }
 })
 
