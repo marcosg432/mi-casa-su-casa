@@ -37,6 +37,7 @@ mkdir -p logs
 
 # Parar PM2 se já estiver rodando
 echo -e "${YELLOW}🛑 Parando instâncias anteriores do PM2...${NC}"
+pm2 delete mi-casa-su-casa 2>/dev/null || true
 pm2 delete brisa-azul 2>/dev/null || true
 
 # Iniciar com PM2
@@ -55,7 +56,7 @@ pm2 status
 
 echo ""
 echo "📝 Para ver os logs:"
-echo "   pm2 logs brisa-azul"
+echo "   pm2 logs mi-casa-su-casa"
 echo ""
 echo "🌐 Aplicação rodando em: http://seu-ip:3000"
 echo ""

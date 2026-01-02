@@ -1,9 +1,9 @@
 module.exports = {
   apps: [{
-    name: 'brisa-azul',
+    name: 'mi-casa-su-casa',
     script: 'node_modules/.bin/vite',
     args: 'preview --port 3000 --host 0.0.0.0',
-    cwd: process.cwd(),
+    cwd: '/root/mi-casa-su-casa',
     instances: 1,
     autorestart: true,
     watch: false,
