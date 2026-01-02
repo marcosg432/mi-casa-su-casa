@@ -28,31 +28,59 @@ const Cardapio = () => {
 
   const loadData = async () => {
     try {
-      // Detectar a URL base do cardápio Next.js
-      // Em desenvolvimento: localhost:3001 (ou porta do Next.js)
-      // Em produção: mesma origem ou URL configurada
-      const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-      const cardapioBaseUrl = isDevelopment 
-        ? 'http://localhost:3001' 
-        : window.location.origin // Em produção, assumir que está na mesma origem ou configurar URL
-      
-      const [dishesRes, beveragesRes] = await Promise.all([
-        fetch(`${cardapioBaseUrl}/api/dishes/public`).catch(() => fetch('/api/dishes/public')),
-        fetch(`${cardapioBaseUrl}/api/beverages/public`).catch(() => fetch('/api/beverages/public')),
-      ])
+      // Criar um timeout manual
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Timeout')), 5000)
+      )
 
-      // Verificar se as respostas são válidas
-      if (!dishesRes.ok || !beveragesRes.ok) {
-        throw new Error('Erro ao buscar dados do cardápio')
+      // Tentar múltiplas URLs possíveis para o cardápio Next.js
+      const possibleUrls = [
+        `http://${window.location.hostname}:3001`, // Mesma máquina, porta 3001
+        window.location.origin, // Mesma origem
+        '/api', // URL relativa (proxy)
+      ]
+
+      let dishesData = []
+      let beveragesData = []
+      let success = false
+
+      // Tentar cada URL até encontrar uma que funcione
+      for (const baseUrl of possibleUrls) {
+        try {
+          const url = baseUrl === '/api' ? baseUrl : `${baseUrl}/api`
+          
+          const fetchPromise = Promise.all([
+            fetch(`${url}/dishes/public`, { 
+              method: 'GET',
+              headers: { 'Content-Type': 'application/json' }
+            }),
+            fetch(`${url}/beverages/public`, { 
+              method: 'GET',
+              headers: { 'Content-Type': 'application/json' }
+            }),
+          ])
+
+          const [dishesRes, beveragesRes] = await Promise.race([
+            fetchPromise,
+            timeoutPromise
+          ])
+
+          if (dishesRes && beveragesRes && dishesRes.ok && beveragesRes.ok) {
+            dishesData = await dishesRes.json()
+            beveragesData = await beveragesRes.json()
+            success = true
+            break
+          }
+        } catch (err) {
+          // Continuar tentando próxima URL
+          console.log(`Tentativa falhou para ${baseUrl}:`, err.message)
+        }
       }
-
-      const dishesData = await dishesRes.json()
-      const beveragesData = await beveragesRes.json()
 
       setDishes(Array.isArray(dishesData) ? dishesData : [])
       setBeverages(Array.isArray(beveragesData) ? beveragesData : [])
     } catch (error) {
-      console.error('Erro ao carregar dados:', error)
+      console.error('Erro ao carregar dados do cardápio:', error)
       setDishes([])
       setBeverages([])
     } finally {
