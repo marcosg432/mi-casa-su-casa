@@ -3,7 +3,8 @@ import SuiteBase from './SuiteBase'
 const Quarto1 = () => {
   const suiteData = {
     id: 'quarto1',
-    nome: 'Quarto Duplo com Banheiro Compartilhado',
+    nome: 'Tem-tem',
+    nomeCompleto: 'Quarto Duplo com Banheiro Compartilhado',
     preco: 150,
     capacidade: 2,
     tamanho: '20 m²',

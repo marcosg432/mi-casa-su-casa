@@ -15,7 +15,6 @@ import Quarto3 from './pages/suites/Quarto3'
 import Quarto4 from './pages/suites/Quarto4'
 import Carrinho from './pages/Carrinho'
 import Checkout from './pages/Checkout'
-import Login from './pages/admin/Login'
 import Dashboard from './pages/admin/Dashboard'
 import Financeiro from './pages/admin/Financeiro'
 import Reservas from './pages/admin/Reservas'
@@ -25,6 +24,8 @@ import Gerenciamento from './pages/admin/Gerenciamento'
 import Despesas from './pages/admin/Despesas'
 import Planilha from './pages/admin/Planilha'
 import PainelCardapio from './pages/admin/PainelCardapio'
+import Cardapio from './pages/Cardapio'
+import CardapioAdmin from './pages/admin/CardapioAdmin'
 import Booking from './pages/Booking'
 import Airbnb from './pages/Airbnb'
 
@@ -49,7 +50,6 @@ function App() {
         <Route path="/quarto4" element={<Quarto4 />} />
         <Route path="/carrinho" element={<Carrinho />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/admin/login" element={<Login />} />
         <Route path="/admin" element={<Dashboard />} />
         <Route path="/admin/financeiro" element={<Financeiro />} />
         <Route path="/admin/reservas" element={<Reservas />} />
@@ -59,6 +59,8 @@ function App() {
         <Route path="/admin/despesas" element={<Despesas />} />
         <Route path="/admin/planilha" element={<Planilha />} />
         <Route path="/admin/painel-cardapio" element={<PainelCardapio />} />
+        <Route path="/cardapio" element={<Cardapio />} />
+        <Route path="/admin/cardapio" element={<CardapioAdmin />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/airbnb" element={<Airbnb />} />
       </Routes>

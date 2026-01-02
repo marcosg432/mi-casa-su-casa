@@ -3,7 +3,8 @@ import SuiteBase from './SuiteBase'
 const Quarto2 = () => {
   const suiteData = {
     id: 'quarto2',
-    nome: 'Quarto Família (4 Camas de Solteiro)',
+    nome: 'Soco',
+    nomeCompleto: 'Quarto Família (4 Camas de Solteiro)',
     preco: 150,
     capacidade: 4,
     tamanho: '40 m²',

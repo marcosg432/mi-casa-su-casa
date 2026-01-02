@@ -78,6 +78,32 @@ export const getQuartos = () => {
       // Limpar dados antigos e usar os novos
       localStorage.removeItem(STORAGE_KEYS.QUARTOS)
     } else {
+      // Verificar se os nomes precisam ser atualizados
+      const nomesCorretos = {
+        'quarto1': { nome: 'Tem-tem', nomeCompleto: 'Quarto Duplo com Banheiro Compartilhado' },
+        'quarto2': { nome: 'Soco', nomeCompleto: 'Quarto Família (4 Camas de Solteiro)' },
+        'quarto3': { nome: 'Sabia', nomeCompleto: 'Quarto Família (1 Cama de Casal + 3 de Solteiro)' },
+        'quarto4': { nome: 'Ararajuba', nomeCompleto: 'Quarto Duplo' }
+      }
+      
+      let precisaAtualizar = false
+      const quartosAtualizados = quartos.map(quarto => {
+        if (nomesCorretos[quarto.id] && quarto.nome !== nomesCorretos[quarto.id].nome) {
+          precisaAtualizar = true
+          return {
+            ...quarto,
+            nome: nomesCorretos[quarto.id].nome,
+            nomeCompleto: quarto.nomeCompleto || nomesCorretos[quarto.id].nomeCompleto
+          }
+        }
+        return quarto
+      })
+      
+      if (precisaAtualizar) {
+        localStorage.setItem(STORAGE_KEYS.QUARTOS, JSON.stringify(quartosAtualizados))
+        return quartosAtualizados
+      }
+      
       return quartos
     }
   }
@@ -87,6 +113,7 @@ export const getQuartos = () => {
     {
       id: 'quarto1',
       nome: 'Tem-tem',
+      nomeCompleto: 'Quarto Duplo com Banheiro Compartilhado',
       preco: 150,
       capacidade: 2,
       tamanho: '20 m²',
@@ -105,6 +132,7 @@ export const getQuartos = () => {
     {
       id: 'quarto2',
       nome: 'Soco',
+      nomeCompleto: 'Quarto Família (4 Camas de Solteiro)',
       preco: 150,
       capacidade: 4,
       tamanho: '40 m²',
@@ -123,6 +151,7 @@ export const getQuartos = () => {
     {
       id: 'quarto3',
       nome: 'Sabia',
+      nomeCompleto: 'Quarto Família (1 Cama de Casal + 3 de Solteiro)',
       preco: 150,
       capacidade: 5,
       tamanho: '40 m²',
@@ -141,6 +170,7 @@ export const getQuartos = () => {
     {
       id: 'quarto4',
       nome: 'Ararajuba',
+      nomeCompleto: 'Quarto Duplo',
       preco: 150,
       capacidade: 2,
       tamanho: '20 m²',

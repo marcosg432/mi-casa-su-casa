@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { FaTimes } from 'react-icons/fa'
 import { getQuartos, getReservasPorQuarto, formatarMoeda } from '../../utils/storage'
+import { getQuartoImages } from '../../utils/quartosImages'
 import AdminHeader from '../../components/AdminHeader'
 import './Quartos.css'
 
@@ -62,20 +63,32 @@ const Quartos = () => {
           </div>
         ) : (
           <div className="quartos-admin-list">
-            {quartos.map(quarto => (
-              <div key={quarto.id} className="quarto-admin-item">
-                <div className="quarto-admin-image">
-                  <div className={`quarto-admin-image-placeholder ${quarto.id}`}></div>
+            {quartos.map(quarto => {
+              const quartoImages = getQuartoImages(quarto.id)
+              const primeiraImagem = quartoImages && quartoImages.length > 0 ? quartoImages[0] : null
+              
+              return (
+                <div key={quarto.id} className="quarto-admin-item">
+                  <div className="quarto-admin-image">
+                    {primeiraImagem ? (
+                      <div 
+                        className="quarto-admin-image-placeholder" 
+                        style={{ backgroundImage: `url(${primeiraImagem})` }}
+                      ></div>
+                    ) : (
+                      <div className={`quarto-admin-image-placeholder ${quarto.id}`}></div>
+                    )}
+                  </div>
+                  <div className="quarto-admin-info">
+                    <h3>{quarto.nome}</h3>
+                    <p>{quarto.preco > 0 ? `R$ ${formatarMoeda(quarto.preco)} / Noite` : 'Consultar preço'}</p>
+                  </div>
+                  <button onClick={() => handleVerFicha(quarto)} className="quarto-admin-button">
+                    Ver ficha
+                  </button>
                 </div>
-                <div className="quarto-admin-info">
-                  <h3>{quarto.nome}</h3>
-                  <p>{quarto.preco > 0 ? `R$ ${formatarMoeda(quarto.preco)} / Noite` : 'Consultar preço'}</p>
-                </div>
-                <button onClick={() => handleVerFicha(quarto)} className="quarto-admin-button">
-                  Ver ficha
-                </button>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
       </div>

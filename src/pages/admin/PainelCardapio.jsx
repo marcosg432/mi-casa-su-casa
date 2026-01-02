@@ -1,9 +1,12 @@
+import { useNavigate } from 'react-router-dom'
 import AdminHeader from '../../components/AdminHeader'
 import './PainelCardapio.css'
 
 const PainelCardapio = () => {
+  const navigate = useNavigate()
+  
   const handleVerPainel = () => {
-    window.open('http://localhost:3000/admin/login', '_blank')
+    navigate('/admin/cardapio')
   }
 
   return (

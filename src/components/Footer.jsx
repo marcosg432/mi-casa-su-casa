@@ -98,7 +98,7 @@ const Footer = () => {
             <Link to="/sobre" className="home-footer-nav-link-mobile">sobre</Link>
             <Link to="/servicos" className="home-footer-nav-link-mobile">Serviços</Link>
             <Link to="/contato" className="home-footer-nav-link-mobile">contato</Link>
-          </nav>
+            </nav>
 
           {/* Contato, Redes Sociais e Botão */}
           <div className="home-footer-bottom-mobile">

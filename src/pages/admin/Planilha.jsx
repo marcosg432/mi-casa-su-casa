@@ -163,7 +163,7 @@ const Planilha = () => {
                 </tr>
               </thead>
               <tbody>
-                {despesasCalculadas.map(despesa => (
+                {despesas.map(despesa => (
                   <tr key={despesa.id}>
                     <td>{despesa.categoria}</td>
                     <td>{despesa.quantidade || ''}</td>

@@ -32,6 +32,20 @@ code {
     monospace;
 }
 
+/* Mobile only - hide on desktop */
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+/* Desktop only - hide on mobile */
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+}
+
 
 
 

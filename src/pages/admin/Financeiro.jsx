@@ -193,7 +193,7 @@ const Financeiro = () => {
   const porcentagemSite = temOrigem ? ((origemReservas['Site / whatsapp'] || 0) / totalOrigem * 100).toFixed(1).replace('.', ',') : '0,0'
   
   // Cores para gráfico de origem (cinza se não houver dados)
-  const coresOrigem = temOrigem ? ['#003f8f', '#ff2aa1', '#00ff00'] : ['#9e9e9e', '#9e9e9e', '#9e9e9e']
+  const coresOrigem = temOrigem ? ['#2196f3', '#ff2aa1', '#00ff00'] : ['#9e9e9e', '#9e9e9e', '#9e9e9e']
 
   const dadosOrigem = [
     { name: 'Site / whatsapp', value: origemReservas['Site / whatsapp'] || 0 },
@@ -251,12 +251,12 @@ const Financeiro = () => {
   const parteNaoLucro = valorFaturamentoGrafico - lucroGrafico
   
   // Se não houver faturamento, mostrar gráfico completamente cinza (100% cinza)
-  // Quando há faturamento, mostrar parte não lucro (azul forte) e lucro (verde)
-  // Se lucro = 0, mostrar apenas faturamento (100% azul)
+  // Quando há faturamento, mostrar parte não lucro (verde) e lucro (verde)
+  // Se lucro = 0, mostrar apenas faturamento (100% verde)
   const dadosFaturamentoGrafico = temFaturamento 
     ? lucroGrafico > 0 
-      ? [parteNaoLucro, lucroGrafico] // Mostrar parte não lucro (azul) e lucro (verde)
-      : [valorFaturamentoGrafico, 0] // Sem lucro, mostrar apenas faturamento (100% azul)
+      ? [parteNaoLucro, lucroGrafico] // Mostrar parte não lucro (verde) e lucro (verde)
+      : [valorFaturamentoGrafico, 0] // Sem lucro, mostrar apenas faturamento (100% verde)
     : [1, 0] // Sem faturamento, mostrar 100% cinza (mas porcentagem será 0%)
   
   const totalGrafico = dadosFaturamentoGrafico[0] + dadosFaturamentoGrafico[1]
@@ -269,13 +269,13 @@ const Financeiro = () => {
   // Porcentagem do faturamento (sempre 100% quando há faturamento, 0% quando não há)
   const porcentagemFaturamento = temFaturamento ? '100,0' : '0,0'
   
-  // Cores para gráfico de faturamento: faturamento (azul forte) e lucro (verde)
+  // Cores para gráfico de faturamento: faturamento (verde) e lucro (verde)
   // Se não houver dados, usar cinza
-  // Se lucro = 0, mostrar apenas azul forte
+  // Se lucro = 0, mostrar apenas verde
   const coresFaturamento = temFaturamento 
     ? lucroGrafico > 0 
-      ? ['#003f8f', '#00ff00'] // Faturamento (azul) e Lucro (verde)
-      : ['#003f8f', '#003f8f'] // Apenas faturamento (azul) quando lucro = 0
+      ? ['#4caf50', '#00ff00'] // Faturamento (verde) e Lucro (verde)
+      : ['#4caf50', '#4caf50'] // Apenas faturamento (verde) quando lucro = 0
     : ['#9e9e9e', '#9e9e9e']
   
   // Porcentagens para ocupação (baseadas nos dados reais)
@@ -283,7 +283,7 @@ const Financeiro = () => {
   const porcentagemFalta = temOcupacao ? ((ocupacaoRestante / totalOcupacao) * 100).toFixed(1).replace('.', ',') : '0,0'
   
   // Cores para gráfico de ocupação (cinza se não houver dados)
-  const coresOcupacao = temOcupacao ? ['#00ff00', '#003f8f'] : ['#9e9e9e', '#9e9e9e']
+  const coresOcupacao = temOcupacao ? ['#00ff00', '#4caf50'] : ['#9e9e9e', '#9e9e9e']
 
   const dadosOcupacao = [
     { name: 'Ocupação', value: ocupacaoRealizada },
@@ -292,7 +292,7 @@ const Financeiro = () => {
 
   const COLORS = {
     green: '#4caf50',
-    blue: '#2196f3',
+    blue: '#4caf50',
     red: '#f44336',
     pink: '#e91e63',
     gray: '#9e9e9e'
@@ -420,7 +420,7 @@ const Financeiro = () => {
             <h3>Origem de reserva</h3>
             <div className="grafico-legenda">
               <div className="legenda-item">
-                <span className="color-box" style={{ background: '#003f8f' }}></span>
+                <span className="color-box" style={{ background: '#2196f3' }}></span>
                 <span className="legenda-texto">Booking {porcentagemBooking}%</span>
               </div>
               <div className="legenda-item">
@@ -496,7 +496,7 @@ const Financeiro = () => {
             <h3>Faturamento</h3>
             <div className="grafico-legenda">
               <div className="legenda-item">
-                <span className="color-box" style={{ background: temFaturamento ? '#003f8f' : '#9e9e9e' }}></span>
+                <span className="color-box" style={{ background: temFaturamento ? '#4caf50' : '#9e9e9e' }}></span>
                 <span className="legenda-texto">Faturamento {porcentagemFaturamento}%</span>
               </div>
               <div className="legenda-item">
@@ -536,7 +536,7 @@ const Financeiro = () => {
                 <span className="legenda-texto">Ocupação {porcentagemOcupacao}%</span>
               </div>
               <div className="legenda-item">
-                <span className="color-box" style={{ background: '#003f8f' }}></span>
+                <span className="color-box" style={{ background: '#4caf50' }}></span>
                 <span className="legenda-texto">Falta {porcentagemFalta}%</span>
               </div>
             </div>

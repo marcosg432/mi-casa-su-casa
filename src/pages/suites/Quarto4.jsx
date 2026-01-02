@@ -3,7 +3,8 @@ import SuiteBase from './SuiteBase'
 const Quarto4 = () => {
   const suiteData = {
     id: 'quarto4',
-    nome: 'Quarto Duplo',
+    nome: 'Ararajuba',
+    nomeCompleto: 'Quarto Duplo',
     preco: 150,
     capacidade: 2,
     tamanho: '20 m²',

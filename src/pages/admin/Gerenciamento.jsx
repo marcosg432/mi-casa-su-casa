@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { FaPlus } from 'react-icons/fa'
-import { getFuncionarios, saveFuncionario, deleteFuncionario, getUsuarioLogado } from '../../utils/storage'
+import { getFuncionarios, saveFuncionario, deleteFuncionario } from '../../utils/storage'
 import AdminHeader from '../../components/AdminHeader'
 import './Gerenciamento.css'
 
@@ -8,7 +8,6 @@ const Gerenciamento = () => {
   const [funcionarios, setFuncionarios] = useState([])
   const [showForm, setShowForm] = useState(false)
   const [formData, setFormData] = useState({ nome: '', email: '', senha: '' })
-  const usuarioLogado = getUsuarioLogado()
 
   useEffect(() => {
     const todosFuncionarios = getFuncionarios()
