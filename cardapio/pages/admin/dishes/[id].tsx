@@ -62,13 +62,29 @@ export default function EditDish() {
     setSaving(true);
 
     try {
+      // Converter price para number
+      let priceValue: number = 0;
+      if (typeof formData.price === 'string') {
+        priceValue = Number(formData.price.replace(',', '.'));
+      } else if (typeof formData.price === 'number') {
+        priceValue = formData.price;
+      }
+
+      // Converter display_order para number
+      let displayOrderValue: number = 0;
+      if (typeof formData.display_order === 'string') {
+        displayOrderValue = Number(formData.display_order);
+      } else if (typeof formData.display_order === 'number') {
+        displayOrderValue = formData.display_order;
+      }
+
       const res = await fetch(`/api/dishes/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
-          price: typeof formData.price === 'string' ? Number(formData.price.replace(',', '.')) : (typeof formData.price === 'number' ? formData.price : 0),
-          display_order: typeof formData.display_order === 'string' ? Number(formData.display_order) : (formData.display_order || 0),
+          price: priceValue,
+          display_order: displayOrderValue,
           category_id: formData.category_id || null,
         }),
       });
