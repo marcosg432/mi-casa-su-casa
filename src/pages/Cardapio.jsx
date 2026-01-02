@@ -28,10 +28,23 @@ const Cardapio = () => {
 
   const loadData = async () => {
     try {
+      // Detectar a URL base do cardápio Next.js
+      // Em desenvolvimento: localhost:3001 (ou porta do Next.js)
+      // Em produção: mesma origem ou URL configurada
+      const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      const cardapioBaseUrl = isDevelopment 
+        ? 'http://localhost:3001' 
+        : window.location.origin // Em produção, assumir que está na mesma origem ou configurar URL
+      
       const [dishesRes, beveragesRes] = await Promise.all([
-        fetch('/api/dishes/public'),
-        fetch('/api/beverages/public'),
+        fetch(`${cardapioBaseUrl}/api/dishes/public`).catch(() => fetch('/api/dishes/public')),
+        fetch(`${cardapioBaseUrl}/api/beverages/public`).catch(() => fetch('/api/beverages/public')),
       ])
+
+      // Verificar se as respostas são válidas
+      if (!dishesRes.ok || !beveragesRes.ok) {
+        throw new Error('Erro ao buscar dados do cardápio')
+      }
 
       const dishesData = await dishesRes.json()
       const beveragesData = await beveragesRes.json()
@@ -85,6 +98,10 @@ const Cardapio = () => {
         <h2 className={styles.sectionTitle}>Pratos</h2>
         {loading ? (
           <div className={styles.loading}>Carregando...</div>
+        ) : dishes.length === 0 ? (
+          <div className={styles.loading}>
+            Nenhum prato disponível no momento. O cardápio pode estar sendo configurado.
+          </div>
         ) : (
           <div className={styles.dishesGrid}>
             {Array.isArray(dishes) && dishes.map((dish) => (
