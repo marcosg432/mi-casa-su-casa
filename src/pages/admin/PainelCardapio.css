@@ -1,0 +1,101 @@
+.painel-cardapio-page {
+  min-height: 100vh;
+  background: #1a1a1a;
+  color: white;
+}
+
+.painel-cardapio-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.painel-cardapio-title {
+  font-size: 48px;
+  font-weight: 400;
+  margin-bottom: 40px;
+  color: white;
+}
+
+.painel-cardapio-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.painel-cardapio-card {
+  background: #2a2a2a;
+  border-radius: 15px;
+  padding: 60px 40px;
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.painel-cardapio-card-title {
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.painel-cardapio-card-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #ccc;
+  margin-bottom: 40px;
+}
+
+.painel-cardapio-button {
+  padding: 15px 40px;
+  background: #00695c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  font-family: sans-serif;
+}
+
+.painel-cardapio-button:hover {
+  background: #00897b;
+  transform: translateY(-2px);
+}
+
+.painel-cardapio-button:active {
+  transform: translateY(0);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .painel-cardapio-container {
+    padding: 20px;
+  }
+
+  .painel-cardapio-title {
+    font-size: 32px;
+    margin-bottom: 30px;
+  }
+
+  .painel-cardapio-card {
+    padding: 40px 30px;
+  }
+
+  .painel-cardapio-card-title {
+    font-size: 24px;
+  }
+
+  .painel-cardapio-card-text {
+    font-size: 14px;
+  }
+
+  .painel-cardapio-button {
+    padding: 12px 30px;
+    font-size: 16px;
+  }
+}
+

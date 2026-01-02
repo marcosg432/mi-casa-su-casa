@@ -1,0 +1,122 @@
+.private-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 30px 50px;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+.private-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.private-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #00695c;
+}
+
+.private-logo-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.private-logo-text {
+  font-size: 18px;
+  font-weight: 400;
+  color: #00695c;
+  text-transform: lowercase;
+}
+
+.private-nav {
+  display: flex;
+  gap: 30px;
+}
+
+.private-nav-link {
+  color: #00695c;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 400;
+  transition: opacity 0.3s;
+  position: relative;
+  padding: 8px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.private-nav-link:hover {
+  opacity: 0.8;
+}
+
+.private-nav-link-text {
+  position: relative;
+  z-index: 1;
+}
+
+.private-nav-link.active {
+  color: #00695c;
+}
+
+.private-active-background {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 105, 92, 0.15);
+  border-radius: 50px;
+  z-index: 0;
+}
+
+.private-lamp-indicator {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.private-lamp-glow {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 4px;
+  background: rgba(0, 105, 92, 0.9);
+  border-radius: 4px 4px 0 0;
+}
+
+.private-lamp-glow-inner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.private-lamp-glow::before {
+  display: none;
+}
+
+.private-lamp-glow::after {
+  display: none;
+}
+
+/* Efeito adicional de brilho menor */
+.private-lamp-indicator::before {
+  display: none;
+}
+
+/* Ocultar cabeçalho no mobile */
+@media (max-width: 768px) {
+  .private-header {
+    display: none;
+  }
+}
+

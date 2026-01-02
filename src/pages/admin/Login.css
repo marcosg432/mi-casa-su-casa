@@ -1,0 +1,141 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-logo-corner {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  pointer-events: auto;
+}
+
+.login-logo-corner-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.login-container {
+  background: #2d2d2d;
+  padding: 50px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  z-index: 10;
+  cursor: default;
+}
+
+.login-logo {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-logo-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #00695c 0%, #4fc3f7 100%);
+  border-radius: 50%;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.login-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.login-form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.login-form-group input {
+  padding: 12px;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: text;
+}
+
+.login-info {
+  background: #e3f2fd;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+.login-info p {
+  font-size: 12px;
+  color: #1976d2;
+  line-height: 1.6;
+}
+
+.login-button {
+  padding: 15px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  position: relative;
+  z-index: 1;
+}
+
+.login-button:hover {
+  background: #555;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .login-container {
+    padding: 40px 30px;
+    margin: 20px;
+  }
+
+  .login-logo-icon {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 30px 20px;
+    margin: 15px;
+  }
+
+  .login-logo-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .login-logo-corner {
+    top: 15px;
+    right: 15px;
+  }
+
+  .login-logo-corner-icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+

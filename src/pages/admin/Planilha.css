@@ -1,0 +1,193 @@
+.planilha-page {
+  min-height: 100vh;
+  background: #1a1a1a;
+}
+
+.planilha-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 50px;
+}
+
+.planilha-title {
+  font-size: 36px;
+  color: #ffffff;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.planilha-mes-selector {
+  margin-bottom: 40px;
+}
+
+.planilha-mes-selector label {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.planilha-mes-input {
+  padding: 10px;
+  border: 3px solid #ffffff;
+  border-radius: 5px;
+  font-size: 14px;
+  background: #ffffff;
+  color: #000000;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+
+.planilha-mes-input::-webkit-calendar-picker-indicator {
+  filter: invert(0);
+  cursor: pointer;
+}
+
+.planilha-mes-input::-moz-calendar-picker-indicator {
+  filter: invert(0);
+  cursor: pointer;
+}
+
+/* Remover botão limpar do calendário */
+.planilha-mes-input::-webkit-clear-button {
+  display: none !important;
+  -webkit-appearance: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.planilha-mes-input::-webkit-inner-spin-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+.planilha-mes-input::-webkit-outer-spin-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+/* Para Firefox */
+.planilha-mes-input::-moz-clear-button {
+  display: none !important;
+}
+
+.planilha-tables {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.planilha-table-container {
+  background: #2d2d2d;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.planilha-table-container h2 {
+  font-size: 20px;
+  color: #ffffff;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.planilha-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ffffff;
+}
+
+.planilha-table thead {
+  background: #2d2d2d;
+}
+
+.planilha-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  position: relative;
+  font-size: 14px;
+}
+
+.planilha-table td {
+  padding: 12px;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.planilha-table tbody tr:hover {
+  background: #353535;
+}
+
+.table-logo {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 15px;
+  height: 15px;
+  background: linear-gradient(135deg, #00695c 0%, #4fc3f7 100%);
+  border-radius: 50%;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .planilha-container {
+    padding: 30px 20px;
+  }
+
+  .planilha-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  .planilha-tables {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .planilha-table-container {
+    padding: 20px;
+    overflow-x: auto;
+  }
+
+  .planilha-table {
+    min-width: 600px;
+  }
+
+  .planilha-table th,
+  .planilha-table td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .planilha-container {
+    padding: 20px 15px;
+  }
+
+  .planilha-title {
+    font-size: 24px;
+  }
+
+  .planilha-table-container {
+    padding: 15px;
+  }
+
+  .planilha-table {
+    min-width: 500px;
+  }
+
+  .planilha-table th,
+  .planilha-table td {
+    padding: 8px 6px;
+    font-size: 11px;
+  }
+}
+

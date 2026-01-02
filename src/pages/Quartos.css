@@ -1,0 +1,377 @@
+.quartos-page {
+  width: 100%;
+}
+
+.quartos-hero {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.quartos-hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/imagem/vista.jpg');
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.9);
+}
+
+.quartos-hero-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.quartos-hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.quartos-hero-title {
+  font-size: 100px;
+  font-weight: 400;
+  color: white;
+  font-family: 'Georgia', serif;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.quartos-hero-subtitle {
+  font-size: 20px;
+  color: white;
+  letter-spacing: 4px;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+.quartos-text-section {
+  padding: 80px 50px;
+  background: #f5f5f0;
+  text-align: center;
+}
+
+.quartos-text-section-desktop {
+  display: block;
+}
+
+.quartos-text-section-mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .quartos-text-section-desktop {
+    display: none;
+  }
+
+  .quartos-text-section-mobile {
+    display: block;
+  }
+}
+
+.quartos-text {
+  max-width: 1000px;
+  margin: 0 auto;
+  font-size: 18px;
+  color: #333;
+  font-family: 'Georgia', serif;
+  line-height: 1.8;
+  letter-spacing: 1px;
+}
+
+.quartos-cards-section {
+  padding: 80px 50px;
+  background: #f5f5f0;
+  position: relative;
+}
+
+
+.quartos-cards-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  position: relative;
+  z-index: 1;
+  align-items: stretch;
+}
+
+.quartos-page-card {
+  background: white;
+  background-image: url('/imagem/textura verde.png');
+  background-size: cover;
+  background-position: center;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.quartos-page-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 0;
+}
+
+.quartos-page-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.quartos-page-card-image {
+  width: 100%;
+  height: 300px;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Carrossel dos quartos */
+.quartos-page-card-carousel {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.quartos-page-card-carousel-images {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.quartos-page-card-carousel-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.quartos-page-card-carousel-image.active {
+  opacity: 1;
+}
+
+.quartos-page-card-carousel-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.quartos-page-card-carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+  padding: 0;
+}
+
+.quartos-page-card-carousel-dot.active {
+  background: white;
+  transform: scale(1.2);
+}
+
+.quartos-page-card-carousel-dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.quartos-page-card-image.imperial {
+  background-image: url('https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=600');
+}
+
+.quartos-page-card-image.exclusiva {
+  background-image: url('https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600');
+}
+
+.quartos-page-card-image.suite3 {
+  background-image: url('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600');
+}
+
+.quartos-page-card-image.suite4 {
+  background-image: url('https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=600');
+}
+
+.quartos-page-card-image.quarto1 {
+  background-image: url('/fotos_dos_quartos/quarto_duplo-com-banheiro-compartilhado/01326756-1b5e-42e3-9bb6-49125bdecaf0.jpg');
+}
+
+.quartos-page-card-image.quarto2 {
+  background-image: url('/fotos_dos_quartos/quarto-familia/0c12b8c5-3f4e-40f2-a33c-652dbd44554a.jpg');
+}
+
+.quartos-page-card-image.quarto3 {
+  background-image: url('/fotos_dos_quartos/quarto-familia-5x/49644389-4641-4e6b-a525-48151c8f1a1a.jpg');
+}
+
+.quartos-page-card-image.quarto4 {
+  background-image: url('/fotos_dos_quartos/quarto_duplo/17594547-0116-4697-9187-e1abf4561671.jpg');
+}
+
+.quartos-page-card-icons {
+  display: flex;
+  gap: 15px;
+  margin: 20px 20px 10px;
+  align-items: center;
+}
+
+.quartos-page-card-icon {
+  font-size: 20px;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quartos-page-card-title {
+  font-size: 24px;
+  color: white;
+  font-family: 'Georgia', serif;
+  margin: 0 20px 15px;
+  font-weight: 400;
+}
+
+.quartos-page-card-description {
+  font-size: 14px;
+  color: white;
+  line-height: 1.6;
+  margin: 0 20px 25px;
+  flex: 1;
+}
+
+.quartos-page-card-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  text-align: left;
+  margin: 0 20px 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-variant-numeric: lining-nums;
+}
+
+.quartos-page-card-button {
+  display: block;
+  margin: auto 20px 25px 20px;
+  padding: 12px 30px;
+  background: white;
+  color: #00695c;
+  text-decoration: none;
+  border-radius: 25px;
+  text-align: center;
+  font-size: 14px;
+  transition: transform 0.3s;
+  margin-top: auto;
+}
+
+.quartos-page-card-button:hover {
+  transform: translateY(-2px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .quartos-hero {
+    height: 50vh;
+    min-height: 400px;
+  }
+
+  .quartos-hero-content {
+    margin-top: 60px;
+    padding: 0 20px;
+  }
+
+  .quartos-hero-title {
+    font-size: 48px;
+    margin-bottom: 15px;
+  }
+
+  .quartos-hero-subtitle {
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+
+  .quartos-text-section {
+    padding: 60px 20px;
+  }
+
+  .quartos-text {
+    font-size: 14px;
+  }
+
+  .quartos-cards-section {
+    padding: 60px 20px;
+  }
+
+  .quartos-cards-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .quartos-page-card-image {
+    height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .quartos-hero {
+    height: 40vh;
+    min-height: 300px;
+  }
+
+  .quartos-hero-title {
+    font-size: 36px;
+  }
+
+  .quartos-hero-subtitle {
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  .quartos-text-section {
+    padding: 40px 15px;
+  }
+
+  .quartos-text {
+    font-size: 13px;
+  }
+
+  .quartos-cards-section {
+    padding: 40px 15px;
+  }
+
+  .quartos-page-card-image {
+    height: 200px;
+  }
+}
+

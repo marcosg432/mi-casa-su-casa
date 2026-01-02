@@ -1,0 +1,297 @@
+.servicos-page {
+  width: 100%;
+}
+
+.servicos-hero {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.servicos-hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/imagem/casa amarela.jpg');
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.9);
+}
+
+.servicos-hero-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.servicos-hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.servicos-hero-title {
+  font-size: 100px;
+  font-weight: 400;
+  color: white;
+  font-family: 'Georgia', serif;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Seção Transporte */
+.servicos-transporte-section {
+  padding: 80px 50px;
+  background: #f5f5f0;
+}
+
+.servicos-transporte-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.servicos-transporte-title {
+  font-size: 48px;
+  color: #00695c;
+  font-family: 'Georgia', serif;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 400;
+}
+
+.servicos-transporte-text {
+  max-width: 800px;
+  margin: 0 auto 50px;
+  text-align: center;
+}
+
+.servicos-transporte-text p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.servicos-van-gallery {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.servicos-van-images {
+  position: relative;
+  width: 100%;
+  height: 500px;
+}
+
+.servicos-van-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.servicos-van-image.active {
+  opacity: 1;
+}
+
+.servicos-van-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.3s;
+  font-size: 20px;
+}
+
+.servicos-van-button:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.servicos-van-button-prev {
+  left: 20px;
+}
+
+.servicos-van-button-next {
+  right: 20px;
+}
+
+.servicos-van-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.servicos-van-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.servicos-van-dot.active {
+  background: white;
+}
+
+/* Seção Cardápio */
+.servicos-cardapio-section {
+  padding: 80px 50px;
+  background: white;
+  background-image: url('/imagem/textura verde.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.servicos-cardapio-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.servicos-cardapio-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.servicos-cardapio-image {
+  width: 100%;
+  height: 300px;
+  background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800');
+  background-size: cover;
+  background-position: center;
+}
+
+.servicos-cardapio-content {
+  padding: 40px;
+  text-align: center;
+}
+
+.servicos-cardapio-title {
+  font-size: 32px;
+  color: #00695c;
+  font-family: 'Georgia', serif;
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+
+.servicos-cardapio-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.servicos-cardapio-button,
+a.servicos-cardapio-button {
+  padding: 15px 40px;
+  background: #00695c;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  font-family: sans-serif;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+a.servicos-cardapio-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 105, 92, 0.3);
+  color: white;
+  text-decoration: none;
+}
+
+.servicos-cardapio-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 105, 92, 0.3);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .servicos-hero {
+    height: 50vh;
+    min-height: 400px;
+  }
+
+  .servicos-hero-content {
+    margin-top: 60px;
+    padding: 0 20px;
+  }
+
+  .servicos-hero-title {
+    font-size: 48px;
+  }
+
+  .servicos-transporte-section {
+    padding: 60px 20px;
+  }
+
+  .servicos-transporte-title {
+    font-size: 32px;
+  }
+
+  .servicos-van-images {
+    height: 300px;
+  }
+
+  .servicos-cardapio-section {
+    padding: 60px 20px;
+  }
+
+  .servicos-cardapio-content {
+    padding: 30px;
+  }
+
+  .servicos-cardapio-title {
+    font-size: 24px;
+  }
+}
+

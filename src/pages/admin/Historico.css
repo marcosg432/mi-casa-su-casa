@@ -1,0 +1,266 @@
+.historico-page {
+  min-height: 100vh;
+  background: #1a1a1a;
+}
+
+.historico-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px;
+}
+
+.historico-title {
+  font-size: 36px;
+  color: #ffffff;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.historico-search {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.historico-search-input {
+  width: 100%;
+  padding: 12px 40px 12px 15px;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.historico-search-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+}
+
+.historico-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.historico-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #b0b0b0;
+  font-size: 16px;
+}
+
+.historico-item {
+  background: #2d2d2d;
+  padding: 20px;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.historico-nome {
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.historico-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.historico-button {
+  padding: 8px 20px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.historico-button:hover {
+  background: #555;
+}
+
+.historico-button.excluir {
+  background: #f44336;
+}
+
+.historico-button.excluir:hover {
+  background: #d32f2f;
+}
+
+.historico-ficha {
+  background: #2d2d2d;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  padding: 30px;
+  position: relative;
+}
+
+.ficha-logo-corner {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+}
+
+.ficha-logo-corner-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.historico-ficha .ficha-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.historico-ficha .ficha-header h3 {
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.ficha-status {
+  margin: 0 20px;
+}
+
+.status-concluida {
+  padding: 5px 15px;
+  background: #4caf50;
+  color: white;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.status-cancelada {
+  padding: 5px 15px;
+  background: #f44336;
+  color: white;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.historico-ficha .ficha-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.historico-ficha .ficha-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.historico-ficha .ficha-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.historico-ficha .ficha-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.historico-ficha .ficha-group input {
+  padding: 10px;
+  border: 1px solid #404040;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.historico-ficha .ficha-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.ficha-excluir {
+  flex: 1;
+  padding: 12px;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.ficha-excluir:hover {
+  background: #d32f2f;
+}
+
+.ficha-sair {
+  flex: 1;
+  padding: 12px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.ficha-sair:hover {
+  background: #555;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .historico-container {
+    padding: 30px 20px;
+  }
+
+  .historico-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  .historico-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .historico-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .historico-ficha {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .historico-container {
+    padding: 20px 15px;
+  }
+
+  .historico-title {
+    font-size: 24px;
+  }
+
+  .historico-item {
+    padding: 15px;
+  }
+
+  .historico-button {
+    padding: 6px 15px;
+    font-size: 12px;
+  }
+
+  .historico-ficha {
+    padding: 15px;
+  }
+}
+

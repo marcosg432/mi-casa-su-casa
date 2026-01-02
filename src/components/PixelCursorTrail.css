@@ -1,0 +1,19 @@
+.pixel-cursor-trail {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #1a1a1a;
+  overflow: hidden;
+  cursor: none;
+  user-select: none;
+  z-index: 0;
+}
+
+.pixel-cursor-pixel {
+  position: absolute;
+  pointer-events: none;
+  background: #ffffff;
+  border-radius: 2px;
+}
+

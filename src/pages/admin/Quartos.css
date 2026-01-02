@@ -1,0 +1,274 @@
+.quartos-admin-page {
+  min-height: 100vh;
+  background: #1a1a1a;
+}
+
+.quartos-admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px;
+}
+
+.quartos-admin-title {
+  font-size: 36px;
+  color: #ffffff;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.quartos-admin-search {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.quartos-admin-search-input {
+  width: 100%;
+  padding: 12px 40px 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.quartos-admin-search-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+}
+
+.quartos-admin-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.quarto-admin-item {
+  background: #2d2d2d;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.quarto-admin-image {
+  width: 100%;
+  height: 200px;
+}
+
+.quarto-admin-image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+  background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400');
+  background-size: cover;
+  background-position: center;
+}
+
+.quarto-admin-image-placeholder.imperial {
+  background-image: url('https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=600');
+}
+
+.quarto-admin-image-placeholder.luxo {
+  background-image: url('https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600');
+}
+
+.quarto-admin-image-placeholder.premium {
+  background-image: url('https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600');
+}
+
+.quarto-admin-image-placeholder.exclusiva {
+  background-image: url('https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600');
+}
+
+.quarto-admin-image-placeholder.quarto1 {
+  background-image: url('https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=600');
+}
+
+.quarto-admin-image-placeholder.quarto2 {
+  background-image: url('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600');
+}
+
+.quarto-admin-image-placeholder.quarto3 {
+  background-image: url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600');
+}
+
+.quarto-admin-image-placeholder.quarto4 {
+  background-image: url('https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=600');
+}
+
+.quarto-admin-info {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.quarto-admin-info h3 {
+  font-size: 16px;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.quarto-admin-info p {
+  font-size: 14px;
+  color: #cccccc;
+  margin: 0;
+}
+
+.quarto-admin-button {
+  width: calc(100% - 40px);
+  margin: 10px 20px 20px 20px;
+  padding: 10px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: auto;
+}
+
+.quarto-admin-button:hover {
+  background: #555;
+}
+
+.quarto-ficha {
+  background: #2d2d2d;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  padding: 30px;
+}
+
+.quarto-ficha .ficha-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #404040;
+}
+
+.quarto-ficha .ficha-header h3 {
+  font-size: 16px;
+  color: #cccccc;
+  margin-bottom: 10px;
+}
+
+.quarto-ficha .ficha-header p {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.quarto-ficha .ficha-header input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 80px;
+}
+
+.quarto-reservas {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.quarto-reserva-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.quarto-reserva-item {
+  border: 1px solid #404040 !important;
+  background: #1a1a1a;
+}
+
+.quarto-reserva-item .reserva-codigo {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+.quarto-reserva-item .reserva-cliente {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.quarto-reserva-item .reserva-cliente label {
+  font-size: 14px;
+  color: #cccccc;
+}
+
+.quarto-reserva-item .reserva-cliente input {
+  padding: 8px;
+  border: 1px solid #404040;
+  border-radius: 5px;
+  background: #2d2d2d;
+  color: #ffffff;
+}
+
+.quarto-reserva-item .reserva-dates {
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+  color: #cccccc;
+}
+
+.ficha-close {
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+}
+
+.ficha-close:hover {
+  background: #d32f2f;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .quartos-admin-container {
+    padding: 30px 20px;
+  }
+
+  .quartos-admin-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  .quartos-admin-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .quartos-admin-container {
+    padding: 20px 15px;
+  }
+
+  .quartos-admin-title {
+    font-size: 24px;
+  }
+
+  .quartos-admin-list {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+

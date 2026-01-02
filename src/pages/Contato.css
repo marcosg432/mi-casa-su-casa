@@ -1,0 +1,223 @@
+.contato-page {
+  width: 100%;
+}
+
+.contato-hero {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.contato-hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/imagem/casa amarela.jpg');
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.7);
+}
+
+.contato-hero-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.contato-hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.contato-hero-title {
+  font-size: 80px;
+  font-weight: 400;
+  color: white;
+  font-family: 'Georgia', serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.contato-content {
+  padding: 100px 50px;
+  background: #f5f5f0;
+}
+
+.contato-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contato-form {
+  background: white;
+  border-radius: 20px;
+  padding: 50px;
+  display: flex;
+  gap: 50px;
+  margin-bottom: 50px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.contato-form-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.contato-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contato-form-group label {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.contato-form-group input,
+.contato-form-group textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.contato-form-group textarea {
+  min-height: 120px;
+}
+
+.contato-form-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
+.contato-logo {
+  width: 150px;
+  height: 150px;
+}
+
+.contato-logo-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.contato-submit-button {
+  padding: 15px 50px;
+  background: linear-gradient(135deg, #00695c 0%, #4fc3f7 100%);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.contato-submit-button:hover {
+  transform: translateY(-2px);
+}
+
+.contato-map {
+  width: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .contato-hero {
+    height: 50vh;
+    min-height: 400px;
+  }
+
+  .contato-hero-content {
+    margin-top: 60px;
+    padding: 0 20px;
+  }
+
+  .contato-hero-title {
+    font-size: 48px;
+  }
+
+  .contato-content {
+    padding: 60px 20px;
+  }
+
+  .contato-form {
+    flex-direction: column;
+    padding: 30px;
+    gap: 30px;
+  }
+
+  .contato-form-left {
+    order: 1;
+  }
+
+  .contato-form-right {
+    order: 2;
+  }
+
+  .contato-logo {
+    width: 120px;
+    height: 120px;
+  }
+
+  .contato-submit-button {
+    padding: 12px 40px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contato-hero {
+    height: 40vh;
+    min-height: 300px;
+  }
+
+  .contato-hero-title {
+    font-size: 36px;
+  }
+
+  .contato-content {
+    padding: 40px 15px;
+  }
+
+  .contato-form {
+    padding: 25px;
+    gap: 25px;
+  }
+
+  .contato-logo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .contato-submit-button {
+    padding: 10px 30px;
+    font-size: 13px;
+  }
+}
+
+

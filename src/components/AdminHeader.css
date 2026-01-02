@@ -1,0 +1,142 @@
+.admin-header {
+  background: #2d2d2d;
+  border-bottom: 1px solid #404040;
+  padding: 20px 50px;
+  position: relative;
+}
+
+.admin-logo-corner {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+.admin-logo-corner-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.admin-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.admin-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.admin-logo-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.admin-logo-text {
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.admin-logout {
+  padding: 8px 20px;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.admin-logout:hover {
+  background: #d32f2f;
+}
+
+.admin-nav {
+  display: flex;
+  gap: 30px;
+}
+
+.admin-nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s;
+}
+
+.admin-nav a:hover {
+  color: #ffffff;
+  opacity: 0.8;
+}
+
+.admin-nav a.active {
+  color: #ffffff;
+  border-bottom-color: #ffffff;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .admin-header {
+    padding: 15px 20px;
+  }
+
+  .admin-header-top {
+    margin-bottom: 15px;
+  }
+
+  .admin-logo-text {
+    font-size: 16px;
+  }
+
+  .admin-logout {
+    padding: 6px 15px;
+    font-size: 12px;
+  }
+
+  .admin-nav {
+    flex-wrap: wrap;
+    gap: 15px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 5px;
+  }
+
+  .admin-nav a {
+    font-size: 14px;
+    padding: 6px 0;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-header {
+    padding: 12px 15px;
+  }
+
+  .admin-logo-text {
+    font-size: 14px;
+  }
+
+  .admin-logout {
+    padding: 5px 12px;
+    font-size: 11px;
+  }
+
+  .admin-nav {
+    gap: 10px;
+  }
+
+  .admin-nav a {
+    font-size: 12px;
+  }
+}
+
