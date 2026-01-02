@@ -12,6 +12,14 @@ class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     console.error('Error:', error, errorInfo)
+    // Em produção, também logar para ajudar no debug
+    if (process.env.NODE_ENV === 'production') {
+      console.error('Error details:', {
+        error: error.toString(),
+        stack: error.stack,
+        componentStack: errorInfo.componentStack
+      })
+    }
   }
 
   render() {

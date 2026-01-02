@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { fetchApi } from '../../utils/api'
 import styles from '../../styles/CardapioAdmin.module.css'
 
 const CardapioAdmin = () => {
@@ -11,7 +12,15 @@ const CardapioAdmin = () => {
   })
 
   useEffect(() => {
-    fetch('/api/init', { method: 'POST' }).catch(() => {})
+    // Inicializar API imediatamente
+    const initAPI = async () => {
+      try {
+        await fetchApi('/init', { method: 'POST' })
+      } catch (error) {
+        console.error('Erro ao inicializar API:', error)
+      }
+    }
+    initAPI()
     
     const handleResize = () => {
       if (window.innerWidth <= 768 && activeTab !== 'orders') {
@@ -71,27 +80,58 @@ function DishesTab() {
   const [beverages, setBeverages] = useState([])
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('all')
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     loadData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter])
 
-  const loadData = async () => {
+  const loadData = async (retryCount = 0) => {
+    setLoading(true)
+    const maxRetries = 2
+    const timeout = 5000
+
     try {
+      const fetchWithTimeout = (fetchPromise) => {
+        return Promise.race([
+          fetchPromise,
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Timeout')), timeout)
+          )
+        ])
+      }
+
       const params = new URLSearchParams()
       if (search) params.append('search', search)
       if (filter !== 'all') params.append('status', filter)
 
       const [dishesRes, beveragesRes] = await Promise.all([
-        fetch(`/api/dishes?${params.toString()}`),
-        fetch(`/api/beverages?${params.toString()}`),
+        fetchWithTimeout(fetchApi(`/dishes?${params.toString()}`, { method: 'GET' })),
+        fetchWithTimeout(fetchApi(`/beverages?${params.toString()}`, { method: 'GET' })),
       ])
 
-      setDishes(await dishesRes.json())
-      setBeverages(await beveragesRes.json())
+      if (!dishesRes.ok || !beveragesRes.ok) {
+        throw new Error('Erro ao carregar dados da API')
+      }
+
+      const dishesData = await dishesRes.json()
+      const beveragesData = await beveragesRes.json()
+
+      setDishes(Array.isArray(dishesData) ? dishesData : [])
+      setBeverages(Array.isArray(beveragesData) ? beveragesData : [])
     } catch (error) {
       console.error('Erro ao carregar:', error)
+      
+      if (retryCount < maxRetries) {
+        setTimeout(() => {
+          loadData(retryCount + 1)
+        }, 1000 * (retryCount + 1))
+        return
+      }
+      
+      setDishes([])
+      setBeverages([])
     } finally {
       setLoading(false)
     }
@@ -127,57 +167,97 @@ function DishesTab() {
       </div>
 
       <h2>Pratos</h2>
-      <div className={styles.itemsGrid}>
-        {dishes.length === 0 ? (
-          <p>Nenhum prato cadastrado</p>
-        ) : (
-          dishes.map((dish) => (
-            <Link key={dish.id} to={`/admin/cardapio/dishes/${dish.id}`}>
-              <div className={styles.itemCard}>
-                {dish.image_url && <img src={dish.image_url} alt={dish.name} />}
-                <h3>{dish.name}</h3>
-                <span className={styles.status}>{dish.status}</span>
-              </div>
-            </Link>
-          ))
-        )}
-      </div>
+      {loading ? (
+        <div className={styles.loading}>Carregando...</div>
+      ) : (
+        <div className={styles.itemsGrid}>
+          {dishes.length === 0 ? (
+            <p>Nenhum prato cadastrado</p>
+          ) : (
+            dishes.map((dish) => (
+              <Link key={dish.id} to={`/admin/cardapio/dishes/${dish.id}`}>
+                <div className={styles.itemCard}>
+                  {dish.image_url && <img src={dish.image_url} alt={dish.name} onError={(e) => {
+                    e.target.style.display = 'none'
+                  }} />}
+                  <h3>{dish.name}</h3>
+                  <span className={styles.status}>{dish.status}</span>
+                </div>
+              </Link>
+            ))
+          )}
+        </div>
+      )}
 
       <h2>Bebidas</h2>
-      <div className={styles.itemsGrid}>
-        {beverages.length === 0 ? (
-          <p>Nenhuma bebida cadastrada</p>
-        ) : (
-          beverages.map((beverage) => (
-            <Link key={beverage.id} to={`/admin/cardapio/beverages/${beverage.id}`}>
-              <div className={styles.itemCard}>
-                {beverage.image_url && <img src={beverage.image_url} alt={beverage.name} />}
-                <h3>{beverage.name}</h3>
-                <span className={styles.status}>{beverage.status}</span>
-              </div>
-            </Link>
-          ))
-        )}
-      </div>
+      {loading ? (
+        <div className={styles.loading}>Carregando...</div>
+      ) : (
+        <div className={styles.itemsGrid}>
+          {beverages.length === 0 ? (
+            <p>Nenhuma bebida cadastrada</p>
+          ) : (
+            beverages.map((beverage) => (
+              <Link key={beverage.id} to={`/admin/cardapio/beverages/${beverage.id}`}>
+                <div className={styles.itemCard}>
+                  {beverage.image_url && <img src={beverage.image_url} alt={beverage.name} onError={(e) => {
+                    e.target.style.display = 'none'
+                  }} />}
+                  <h3>{beverage.name}</h3>
+                  <span className={styles.status}>{beverage.status}</span>
+                </div>
+              </Link>
+            ))
+          )}
+        </div>
+      )}
     </div>
   )
 }
 
 function OrdersTab() {
   const [sheets, setSheets] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     loadSheets()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const loadSheets = async () => {
+  const loadSheets = async (retryCount = 0) => {
+    setLoading(true)
+    const maxRetries = 2
+    const timeout = 5000
+
     try {
-      const res = await fetch('/api/orders?status=active')
+      const fetchWithTimeout = (fetchPromise) => {
+        return Promise.race([
+          fetchPromise,
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Timeout')), timeout)
+          )
+        ])
+      }
+
+      const res = await fetchWithTimeout(fetchApi('/orders?status=active', { method: 'GET' }))
+
+      if (!res.ok) {
+        throw new Error('Erro ao carregar fichas')
+      }
+
       const data = await res.json()
-      setSheets(data)
+      setSheets(Array.isArray(data) ? data : [])
     } catch (error) {
       console.error('Erro ao carregar fichas:', error)
+      
+      if (retryCount < maxRetries) {
+        setTimeout(() => {
+          loadSheets(retryCount + 1)
+        }, 1000 * (retryCount + 1))
+        return
+      }
+      
+      setSheets([])
     } finally {
       setLoading(false)
     }
@@ -212,55 +292,91 @@ function OrdersTab() {
       <Link to="/admin/cardapio/orders/new">
         <button className={styles.addButton}>+ Nova Ficha de Pedido</button>
       </Link>
-      <div className={styles.sheetsList}>
-        {sheets.map((sheet) => (
-          <div key={sheet.id} style={{ position: 'relative' }}>
-            <Link to={`/admin/cardapio/orders/${sheet.id}`}>
-              <div className={styles.sheetCard}>
-                <h3>Mesa {sheet.table_number}</h3>
-                {sheet.customer_name && <p>Cliente: {sheet.customer_name}</p>}
-                <p>Total: R$ {sheet.total?.toFixed(2) || '0.00'}</p>
+      {loading ? (
+        <div className={styles.loading}>Carregando...</div>
+      ) : (
+        <div className={styles.sheetsList}>
+          {sheets.length === 0 ? (
+            <p>Nenhuma ficha de pedido ativa</p>
+          ) : (
+            sheets.map((sheet) => (
+              <div key={sheet.id} style={{ position: 'relative' }}>
+                <Link to={`/admin/cardapio/orders/${sheet.id}`}>
+                  <div className={styles.sheetCard}>
+                    <h3>Mesa {sheet.table_number}</h3>
+                    {sheet.customer_name && <p>Cliente: {sheet.customer_name}</p>}
+                    <p>Total: R$ {sheet.total?.toFixed(2) || '0.00'}</p>
+                  </div>
+                </Link>
+                <button
+                  onClick={(e) => handleDeleteSheet(sheet.id, e)}
+                  style={{
+                    position: 'absolute',
+                    top: '10px',
+                    right: '10px',
+                    background: '#dc3545',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    padding: '5px 10px',
+                    cursor: 'pointer',
+                    fontSize: '12px'
+                  }}
+                >
+                  × Excluir
+                </button>
               </div>
-            </Link>
-            <button
-              onClick={(e) => handleDeleteSheet(sheet.id, e)}
-              style={{
-                position: 'absolute',
-                top: '10px',
-                right: '10px',
-                background: '#dc3545',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                padding: '5px 10px',
-                cursor: 'pointer',
-                fontSize: '12px'
-              }}
-            >
-              × Excluir
-            </button>
-          </div>
-        ))}
-      </div>
+            ))
+          )}
+        </div>
+      )}
     </div>
   )
 }
 
 function SpreadsheetTab() {
   const [items, setItems] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     loadSpreadsheet()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const loadSpreadsheet = async () => {
+  const loadSpreadsheet = async (retryCount = 0) => {
+    setLoading(true)
+    const maxRetries = 2
+    const timeout = 5000
+
     try {
-      const res = await fetch('/api/spreadsheet')
+      const fetchWithTimeout = (fetchPromise) => {
+        return Promise.race([
+          fetchPromise,
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Timeout')), timeout)
+          )
+        ])
+      }
+
+      const res = await fetchWithTimeout(fetchApi('/spreadsheet', { method: 'GET' }))
+
+      if (!res.ok) {
+        throw new Error('Erro ao carregar planilha')
+      }
+
       const data = await res.json()
-      setItems(data)
+      setItems(Array.isArray(data) ? data : [])
     } catch (error) {
       console.error('Erro ao carregar planilha:', error)
+      
+      if (retryCount < maxRetries) {
+        setTimeout(() => {
+          loadSpreadsheet(retryCount + 1)
+        }, 1000 * (retryCount + 1))
+        return
+      }
+      
+      setItems([])
     } finally {
       setLoading(false)
     }
@@ -269,24 +385,36 @@ function SpreadsheetTab() {
   return (
     <div className={styles.tabContent}>
       <h2>Planilha de Valores</h2>
-      <table className={styles.spreadsheetTable}>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Tipo</th>
-            <th>Valor</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item) => (
-            <tr key={`${item.type}-${item.id}`}>
-              <td>{item.name}</td>
-              <td>{item.type === 'dish' ? 'Prato' : 'Bebida'}</td>
-              <td>R$ {item.price.toFixed(2)}</td>
+      {loading ? (
+        <div className={styles.loading}>Carregando...</div>
+      ) : (
+        <table className={styles.spreadsheetTable}>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Valor</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {items.length === 0 ? (
+              <tr>
+                <td colSpan="3" style={{ textAlign: 'center', padding: '20px' }}>
+                  Nenhum item cadastrado
+                </td>
+              </tr>
+            ) : (
+              items.map((item) => (
+                <tr key={`${item.type}-${item.id}`}>
+                  <td>{item.name}</td>
+                  <td>{item.type === 'dish' ? 'Prato' : 'Bebida'}</td>
+                  <td>R$ {item.price.toFixed(2)}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      )}
     </div>
   )
 }
@@ -294,20 +422,48 @@ function SpreadsheetTab() {
 function ReceiptsTab() {
   const [receipts, setReceipts] = useState([])
   const [searchCode, setSearchCode] = useState('')
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     loadReceipts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const loadReceipts = async () => {
+  const loadReceipts = async (retryCount = 0) => {
+    setLoading(true)
+    const maxRetries = 2
+    const timeout = 5000
+
     try {
+      const fetchWithTimeout = (fetchPromise) => {
+        return Promise.race([
+          fetchPromise,
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Timeout')), timeout)
+          )
+        ])
+      }
+
       const params = searchCode ? `?code=${searchCode}` : ''
-      const res = await fetch(`/api/receipts${params}`)
+      const res = await fetchWithTimeout(fetchApi(`/receipts${params}`, { method: 'GET' }))
+
+      if (!res.ok) {
+        throw new Error('Erro ao carregar vias')
+      }
+
       const data = await res.json()
-      setReceipts(data)
+      setReceipts(Array.isArray(data) ? data : [])
     } catch (error) {
       console.error('Erro ao carregar vias:', error)
+      
+      if (retryCount < maxRetries) {
+        setTimeout(() => {
+          loadReceipts(retryCount + 1)
+        }, 1000 * (retryCount + 1))
+        return
+      }
+      
+      setReceipts([])
     } finally {
       setLoading(false)
     }
@@ -354,37 +510,45 @@ function ReceiptsTab() {
         />
         <button onClick={handleSearch} className={styles.searchButton}>Buscar</button>
       </div>
-      <div className={styles.receiptsList}>
-        {receipts.map((receipt) => (
-          <div key={receipt.id} style={{ position: 'relative' }}>
-            <Link to={`/admin/cardapio/receipts/${receipt.code}`}>
-              <div className={styles.receiptCard}>
-                <h3>Código: {receipt.code}</h3>
-                <p>Mesa: {receipt.table_number}</p>
-                {receipt.customer_name && <p>Cliente: {receipt.customer_name}</p>}
-                <p>Total: R$ {receipt.total.toFixed(2)}</p>
+      {loading ? (
+        <div className={styles.loading}>Carregando...</div>
+      ) : (
+        <div className={styles.receiptsList}>
+          {receipts.length === 0 ? (
+            <p>Nenhuma via encontrada</p>
+          ) : (
+            receipts.map((receipt) => (
+              <div key={receipt.id} style={{ position: 'relative' }}>
+                <Link to={`/admin/cardapio/receipts/${receipt.code}`}>
+                  <div className={styles.receiptCard}>
+                    <h3>Código: {receipt.code}</h3>
+                    <p>Mesa: {receipt.table_number}</p>
+                    {receipt.customer_name && <p>Cliente: {receipt.customer_name}</p>}
+                    <p>Total: R$ {receipt.total.toFixed(2)}</p>
+                  </div>
+                </Link>
+                <button
+                  onClick={(e) => handleDeleteReceipt(receipt.code, e)}
+                  style={{
+                    position: 'absolute',
+                    top: '10px',
+                    right: '10px',
+                    background: '#dc3545',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    padding: '5px 10px',
+                    cursor: 'pointer',
+                    fontSize: '12px'
+                  }}
+                >
+                  × Excluir
+                </button>
               </div>
-            </Link>
-            <button
-              onClick={(e) => handleDeleteReceipt(receipt.code, e)}
-              style={{
-                position: 'absolute',
-                top: '10px',
-                right: '10px',
-                background: '#dc3545',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                padding: '5px 10px',
-                cursor: 'pointer',
-                fontSize: '12px'
-              }}
-            >
-              × Excluir
-            </button>
-          </div>
-        ))}
-      </div>
+            ))
+          )}
+        </div>
+      )}
     </div>
   )
 }
