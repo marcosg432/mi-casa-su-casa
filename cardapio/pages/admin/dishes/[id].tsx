@@ -6,7 +6,16 @@ import styles from '@/styles/DishEdit.module.css';
 export default function EditDish() {
   const router = useRouter();
   const { id } = router.query;
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string;
+    mini_presentation: string;
+    full_description: string;
+    image_url: string;
+    category_id: string;
+    price: number | string;
+    status: string;
+    display_order: number | string;
+  }>({
     name: '',
     mini_presentation: '',
     full_description: '',
@@ -58,7 +67,7 @@ export default function EditDish() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
-          price: typeof formData.price === 'string' ? Number(formData.price.replace(',', '.')) : (formData.price || 0),
+          price: typeof formData.price === 'string' ? Number(formData.price.replace(',', '.')) : (typeof formData.price === 'number' ? formData.price : 0),
           display_order: typeof formData.display_order === 'string' ? Number(formData.display_order) : (formData.display_order || 0),
           category_id: formData.category_id || null,
         }),

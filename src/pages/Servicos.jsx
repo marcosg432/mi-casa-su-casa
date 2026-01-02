@@ -107,7 +107,7 @@ const Servicos = () => {
                 <p className="servicos-cardapio-text">
                   Preparamos nossas refeições com cuidado e carinho, oferecendo opções que trazem mais conforto e praticidade durante a sua estadia.
                 </p>
-                <a href="http://localhost:3000" target="_blank" rel="noopener noreferrer" className="servicos-cardapio-button">Ver Cardápio</a>
+                <Link to="/cardapio" className="servicos-cardapio-button">Ver Cardápio</Link>
               </div>
             </div>
           </div>
