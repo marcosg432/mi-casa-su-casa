@@ -1,0 +1,5 @@
+# Configuração para Netlify/Vercel (caso use)
+# Todas as rotas devem redirecionar para index.html para suportar React Router
+
+/*    /index.html   200
+

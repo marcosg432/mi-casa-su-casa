@@ -30,42 +30,63 @@ import Booking from './pages/Booking'
 import Airbnb from './pages/Airbnb'
 
 function App() {
-  console.log('App component rendering')
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/quartos" element={<Quartos />} />
-        <Route path="/galeria" element={<Galeria />} />
-        <Route path="/sobre" element={<Sobre />} />
-        <Route path="/contato" element={<Contato />} />
-        <Route path="/servicos" element={<Servicos />} />
-        <Route path="/suite-imperial" element={<SuiteImperial />} />
-        <Route path="/suite-luxo" element={<SuiteLuxo />} />
-        <Route path="/suite-premium" element={<SuitePremium />} />
-        <Route path="/suite-exclusiva" element={<SuiteExclusiva />} />
-        <Route path="/quarto1" element={<Quarto1 />} />
-        <Route path="/quarto2" element={<Quarto2 />} />
-        <Route path="/quarto3" element={<Quarto3 />} />
-        <Route path="/quarto4" element={<Quarto4 />} />
-        <Route path="/carrinho" element={<Carrinho />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/admin" element={<Dashboard />} />
-        <Route path="/admin/financeiro" element={<Financeiro />} />
-        <Route path="/admin/reservas" element={<Reservas />} />
-        <Route path="/admin/quartos" element={<QuartosAdmin />} />
-        <Route path="/admin/historico" element={<Historico />} />
-        <Route path="/admin/gerenciamento" element={<Gerenciamento />} />
-        <Route path="/admin/despesas" element={<Despesas />} />
-        <Route path="/admin/planilha" element={<Planilha />} />
-        <Route path="/admin/painel-cardapio" element={<PainelCardapio />} />
-        <Route path="/cardapio" element={<Cardapio />} />
-        <Route path="/admin/cardapio" element={<CardapioAdmin />} />
-        <Route path="/booking" element={<Booking />} />
-        <Route path="/airbnb" element={<Airbnb />} />
-      </Routes>
-    </Router>
-  )
+  try {
+    return (
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/quartos" element={<Quartos />} />
+          <Route path="/galeria" element={<Galeria />} />
+          <Route path="/sobre" element={<Sobre />} />
+          <Route path="/contato" element={<Contato />} />
+          <Route path="/servicos" element={<Servicos />} />
+          <Route path="/suite-imperial" element={<SuiteImperial />} />
+          <Route path="/suite-luxo" element={<SuiteLuxo />} />
+          <Route path="/suite-premium" element={<SuitePremium />} />
+          <Route path="/suite-exclusiva" element={<SuiteExclusiva />} />
+          <Route path="/quarto1" element={<Quarto1 />} />
+          <Route path="/quarto2" element={<Quarto2 />} />
+          <Route path="/quarto3" element={<Quarto3 />} />
+          <Route path="/quarto4" element={<Quarto4 />} />
+          <Route path="/carrinho" element={<Carrinho />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/admin" element={<Dashboard />} />
+          <Route path="/admin/financeiro" element={<Financeiro />} />
+          <Route path="/admin/reservas" element={<Reservas />} />
+          <Route path="/admin/quartos" element={<QuartosAdmin />} />
+          <Route path="/admin/historico" element={<Historico />} />
+          <Route path="/admin/gerenciamento" element={<Gerenciamento />} />
+          <Route path="/admin/despesas" element={<Despesas />} />
+          <Route path="/admin/planilha" element={<Planilha />} />
+          <Route path="/admin/painel-cardapio" element={<PainelCardapio />} />
+          <Route path="/cardapio" element={<Cardapio />} />
+          <Route path="/admin/cardapio" element={<CardapioAdmin />} />
+          <Route path="/booking" element={<Booking />} />
+          <Route path="/airbnb" element={<Airbnb />} />
+          <Route path="*" element={
+            <div style={{ padding: '50px', textAlign: 'center' }}>
+              <h1>Página não encontrada</h1>
+              <a href="/" style={{ color: '#667eea' }}>Voltar para a página inicial</a>
+            </div>
+          } />
+        </Routes>
+      </Router>
+    )
+  } catch (error) {
+    console.error('Erro no App:', error)
+    return (
+      <div style={{ padding: '50px', textAlign: 'center', fontFamily: 'Arial' }}>
+        <h1>Erro ao carregar a aplicação</h1>
+        <p>{error.message}</p>
+        <button 
+          onClick={() => window.location.reload()} 
+          style={{ padding: '10px 20px', marginTop: '20px', cursor: 'pointer' }}
+        >
+          Recarregar
+        </button>
+      </div>
+    )
+  }
 }
 
 export default App
