@@ -1,8 +1,7 @@
 module.exports = {
   apps: [{
     name: 'mi-casa-su-casa',
-    script: 'node_modules/.bin/vite',
-    args: 'preview --port 3000 --host 0.0.0.0',
+    script: 'server.js',
     cwd: '/root/mi-casa-su-casa',
     instances: 1,
     autorestart: true,
