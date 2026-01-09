@@ -23,14 +23,14 @@ const AdminHeader = ({ currentPage }) => {
         <Link to="/admin/historico" className={currentPage === 'historico' ? 'active' : ''}>
           Histórico
         </Link>
-        <Link to="/admin/gerenciamento" className={currentPage === 'gerenciamento' ? 'active' : ''}>
-          Gerenciamento
-        </Link>
         <Link to="/admin/despesas" className={currentPage === 'despesas' ? 'active' : ''}>
           Gerenciar despesas
         </Link>
         <Link to="/admin/painel-cardapio" className={currentPage === 'painel-cardapio' ? 'active' : ''}>
           Painel Cardápio
+        </Link>
+        <Link to="/admin/galeria" className={currentPage === 'galeria' ? 'active' : ''}>
+          Galeria
         </Link>
       </nav>
     </header>

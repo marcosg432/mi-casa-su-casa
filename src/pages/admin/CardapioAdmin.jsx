@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { fetchApi } from '../../utils/api'
 import styles from '../../styles/CardapioAdmin.module.css'
 
 const CardapioAdmin = () => {
@@ -12,16 +11,6 @@ const CardapioAdmin = () => {
   })
 
   useEffect(() => {
-    // Inicializar API imediatamente
-    const initAPI = async () => {
-      try {
-        await fetchApi('/init', { method: 'POST' })
-      } catch (error) {
-        console.error('Erro ao inicializar API:', error)
-      }
-    }
-    initAPI()
-    
     const handleResize = () => {
       if (window.innerWidth <= 768 && activeTab !== 'orders') {
         setActiveTab('orders')
@@ -66,10 +55,10 @@ const CardapioAdmin = () => {
       </nav>
 
       <main className={styles.main}>
-        {activeTab === 'dishes' && <div className="desktop-only"><DishesTab /></div>}
+        {activeTab === 'dishes' && <DishesTab />}
         {activeTab === 'orders' && <OrdersTab />}
-        {activeTab === 'spreadsheet' && <div className="desktop-only"><SpreadsheetTab /></div>}
-        {activeTab === 'receipts' && <div className="desktop-only"><ReceiptsTab /></div>}
+        {activeTab === 'spreadsheet' && <SpreadsheetTab />}
+        {activeTab === 'receipts' && <ReceiptsTab />}
       </main>
     </div>
   )
@@ -87,28 +76,17 @@ function DishesTab() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter])
 
-  const loadData = async (retryCount = 0) => {
+  const loadData = async () => {
     setLoading(true)
-    const maxRetries = 2
-    const timeout = 5000
 
     try {
-      const fetchWithTimeout = (fetchPromise) => {
-        return Promise.race([
-          fetchPromise,
-          new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('Timeout')), timeout)
-          )
-        ])
-      }
-
       const params = new URLSearchParams()
       if (search) params.append('search', search)
       if (filter !== 'all') params.append('status', filter)
 
       const [dishesRes, beveragesRes] = await Promise.all([
-        fetchWithTimeout(fetchApi(`/dishes?${params.toString()}`, { method: 'GET' })),
-        fetchWithTimeout(fetchApi(`/beverages?${params.toString()}`, { method: 'GET' })),
+        fetch(`/api/dishes?${params.toString()}`),
+        fetch(`/api/beverages?${params.toString()}`),
       ])
 
       if (!dishesRes.ok || !beveragesRes.ok) {
@@ -122,14 +100,6 @@ function DishesTab() {
       setBeverages(Array.isArray(beveragesData) ? beveragesData : [])
     } catch (error) {
       console.error('Erro ao carregar:', error)
-      
-      if (retryCount < maxRetries) {
-        setTimeout(() => {
-          loadData(retryCount + 1)
-        }, 1000 * (retryCount + 1))
-        return
-      }
-      
       setDishes([])
       setBeverages([])
     } finally {
@@ -224,22 +194,11 @@ function OrdersTab() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const loadSheets = async (retryCount = 0) => {
+  const loadSheets = async () => {
     setLoading(true)
-    const maxRetries = 2
-    const timeout = 5000
 
     try {
-      const fetchWithTimeout = (fetchPromise) => {
-        return Promise.race([
-          fetchPromise,
-          new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('Timeout')), timeout)
-          )
-        ])
-      }
-
-      const res = await fetchWithTimeout(fetchApi('/orders?status=active', { method: 'GET' }))
+      const res = await fetch('/api/orders?status=active')
 
       if (!res.ok) {
         throw new Error('Erro ao carregar fichas')
@@ -249,14 +208,6 @@ function OrdersTab() {
       setSheets(Array.isArray(data) ? data : [])
     } catch (error) {
       console.error('Erro ao carregar fichas:', error)
-      
-      if (retryCount < maxRetries) {
-        setTimeout(() => {
-          loadSheets(retryCount + 1)
-        }, 1000 * (retryCount + 1))
-        return
-      }
-      
       setSheets([])
     } finally {
       setLoading(false)
@@ -343,22 +294,11 @@ function SpreadsheetTab() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const loadSpreadsheet = async (retryCount = 0) => {
+  const loadSpreadsheet = async () => {
     setLoading(true)
-    const maxRetries = 2
-    const timeout = 5000
 
     try {
-      const fetchWithTimeout = (fetchPromise) => {
-        return Promise.race([
-          fetchPromise,
-          new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('Timeout')), timeout)
-          )
-        ])
-      }
-
-      const res = await fetchWithTimeout(fetchApi('/spreadsheet', { method: 'GET' }))
+      const res = await fetch('/api/spreadsheet')
 
       if (!res.ok) {
         throw new Error('Erro ao carregar planilha')
@@ -368,14 +308,6 @@ function SpreadsheetTab() {
       setItems(Array.isArray(data) ? data : [])
     } catch (error) {
       console.error('Erro ao carregar planilha:', error)
-      
-      if (retryCount < maxRetries) {
-        setTimeout(() => {
-          loadSpreadsheet(retryCount + 1)
-        }, 1000 * (retryCount + 1))
-        return
-      }
-      
       setItems([])
     } finally {
       setLoading(false)
@@ -429,23 +361,12 @@ function ReceiptsTab() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const loadReceipts = async (retryCount = 0) => {
+  const loadReceipts = async () => {
     setLoading(true)
-    const maxRetries = 2
-    const timeout = 5000
 
     try {
-      const fetchWithTimeout = (fetchPromise) => {
-        return Promise.race([
-          fetchPromise,
-          new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('Timeout')), timeout)
-          )
-        ])
-      }
-
       const params = searchCode ? `?code=${searchCode}` : ''
-      const res = await fetchWithTimeout(fetchApi(`/receipts${params}`, { method: 'GET' }))
+      const res = await fetch(`/api/receipts${params}`)
 
       if (!res.ok) {
         throw new Error('Erro ao carregar vias')
@@ -455,14 +376,6 @@ function ReceiptsTab() {
       setReceipts(Array.isArray(data) ? data : [])
     } catch (error) {
       console.error('Erro ao carregar vias:', error)
-      
-      if (retryCount < maxRetries) {
-        setTimeout(() => {
-          loadReceipts(retryCount + 1)
-        }, 1000 * (retryCount + 1))
-        return
-      }
-      
       setReceipts([])
     } finally {
       setLoading(false)

@@ -1,13 +1,14 @@
 // Sistema de armazenamento local para simular banco de dados
 
 const STORAGE_KEYS = {
-  RESERVAS: 'brisa_azul_reservas',
-  QUARTOS: 'brisa_azul_quartos',
-  DESPESAS: 'brisa_azul_despesas',
-  FUNCIONARIOS: 'brisa_azul_funcionarios',
-  USUARIO_LOGADO: 'brisa_azul_usuario_logado',
-  CARRINHO: 'brisa_azul_carrinho',
-  META_OCUPACAO: 'brisa_azul_meta_ocupacao'
+  RESERVAS: 'mi_casa_su_casa_reservas',
+  QUARTOS: 'mi_casa_su_casa_quartos',
+  DESPESAS: 'mi_casa_su_casa_despesas',
+  FUNCIONARIOS: 'mi_casa_su_casa_funcionarios',
+  USUARIO_LOGADO: 'mi_casa_su_casa_usuario_logado',
+  CARRINHO: 'mi_casa_su_casa_carrinho',
+  META_OCUPACAO: 'mi_casa_su_casa_meta_ocupacao',
+  GALERIA: 'mi_casa_su_casa_galeria'
 }
 
 // Função para verificar e atualizar reservas concluídas automaticamente
@@ -328,5 +329,65 @@ export const formatarMoeda = (valor) => {
     
     return `${sinal}${inteiroFormatado},${decimal}`
   }
+}
+
+// Funções para gerenciar imagens da galeria
+export const getGaleriaImagens = () => {
+  const data = localStorage.getItem(STORAGE_KEYS.GALERIA)
+  if (data) {
+    return JSON.parse(data)
+  }
+  
+  // Imagens padrão iniciais
+  const imagensPadrao = [
+    { id: 1, src: '/imagem/essa1.jpg', number: 1 },
+    { id: 2, src: '/imagem/essa2.jpg', number: 2 },
+    { id: 3, src: '/imagem/essa3.jpg', number: 3 },
+    { id: 4, src: '/imagem/essa4.jpg', number: 4 },
+    { id: 5, src: '/imagem/essa5.jpg', number: 5 },
+    { id: 6, src: '/imagem/essa6.jpg', number: 6 },
+    { id: 7, src: '/imagem/essa7.jpg', number: 7 },
+    { id: 8, src: '/imagem/essa8.jpg', number: 8 },
+    { id: 9, src: '/imagem/essa9.jpg', number: 9 },
+    { id: 10, src: '/imagem/essa10.jpg', number: 10 },
+    { id: 11, src: '/imagem/essa11.jpg', number: 11 },
+    { id: 12, src: '/imagem/essa12.jpg', number: 12 },
+    { id: 13, src: '/imagem/essa13.jpg', number: 13 },
+    { id: 14, src: '/imagem/essa14.jpg', number: 14 },
+    { id: 15, src: '/imagem/vertical/1.jpg', number: 15 },
+    { id: 16, src: '/imagem/vertical/3.jpg', number: 16 },
+    { id: 18, src: '/imagem/vertical/8.jpg', number: 18 },
+    { id: 19, src: '/imagem/vertical/9.jpg', number: 19 },
+    { id: 20, src: '/imagem/vertical/10.jpg', number: 20 },
+    { id: 21, src: '/imagem/vertical/11.jpg', number: 21 },
+    { id: 22, src: '/imagem/vertical/14.jpg', number: 22 },
+    { id: 23, src: '/imagem/orizontal/2.jpg', number: 23 },
+    { id: 24, src: '/imagem/orizontal/5.jpg', number: 24 },
+    { id: 25, src: '/imagem/orizontal/6.jpg', number: 25 },
+    { id: 26, src: '/imagem/orizontal/7.jpg', number: 26 },
+    { id: 27, src: '/imagem/orizontal/13.jpg', number: 27 },
+    { id: 28, src: '/imagem/orizontal/14.jpg', number: 28 },
+  ]
+  
+  localStorage.setItem(STORAGE_KEYS.GALERIA, JSON.stringify(imagensPadrao))
+  return imagensPadrao
+}
+
+export const addGaleriaImagem = (src) => {
+  const imagens = getGaleriaImagens()
+  const novaImagem = {
+    id: Date.now().toString(),
+    src: src,
+    number: imagens.length + 1
+  }
+  imagens.push(novaImagem)
+  localStorage.setItem(STORAGE_KEYS.GALERIA, JSON.stringify(imagens))
+  return novaImagem
+}
+
+export const deleteGaleriaImagem = (id) => {
+  const imagens = getGaleriaImagens()
+  const imagensFiltradas = imagens.filter(img => img.id !== id)
+  localStorage.setItem(STORAGE_KEYS.GALERIA, JSON.stringify(imagensFiltradas))
 }
 

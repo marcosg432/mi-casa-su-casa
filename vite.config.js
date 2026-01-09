@@ -10,7 +10,7 @@ export default defineConfig({
     open: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:3006', // Cardápio Next.js em desenvolvimento
+        target: 'http://localhost:3000', // Cardápio Next.js em desenvolvimento
         changeOrigin: true,
         secure: false
       }

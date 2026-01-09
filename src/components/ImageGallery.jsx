@@ -1,71 +1,80 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { FaTimes, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { getGaleriaImagens } from '../utils/storage';
 import './ImageGallery.css';
 
 export function ImageGallery() {
-  // Imagens Desktop
-  const images = [
-    // Imagens essa1 até essa14
-    { number: 1, src: '/imagem/essa1.jpg' },
-    { number: 2, src: '/imagem/essa2.jpg' },
-    { number: 3, src: '/imagem/essa3.jpg' },
-    { number: 4, src: '/imagem/essa4.jpg' },
-    { number: 5, src: '/imagem/essa5.jpg' },
-    { number: 6, src: '/imagem/essa6.jpg' },
-    { number: 7, src: '/imagem/essa7.jpg' },
-    { number: 8, src: '/imagem/essa8.jpg' },
-    { number: 9, src: '/imagem/essa9.jpg' },
-    { number: 10, src: '/imagem/essa10.jpg' },
-    { number: 11, src: '/imagem/essa11.jpg' },
-    { number: 12, src: '/imagem/essa12.jpg' },
-    { number: 13, src: '/imagem/essa13.jpg' },
-    { number: 14, src: '/imagem/essa14.jpg' },
-    // Imagens numeradas 1 até 14 (verificando pastas vertical e horizontal)
-    { number: 15, src: '/imagem/vertical/1.jpg' },
-    { number: 16, src: '/imagem/vertical/3.jpg' },
-    { number: 18, src: '/imagem/vertical/8.jpg' },
-    { number: 19, src: '/imagem/vertical/9.jpg' },
-    { number: 20, src: '/imagem/vertical/10.jpg' },
-    { number: 21, src: '/imagem/vertical/11.jpg' },
-    { number: 22, src: '/imagem/vertical/14.jpg' },
-    { number: 23, src: '/imagem/orizontal/2.jpg' },
-    { number: 24, src: '/imagem/orizontal/5.jpg' },
-    { number: 25, src: '/imagem/orizontal/6.jpg' },
-    { number: 26, src: '/imagem/orizontal/7.jpg' },
-    { number: 27, src: '/imagem/orizontal/13.jpg' },
-    { number: 28, src: '/imagem/orizontal/14.jpg' },
-  ];
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [images, setImages] = useState([]);
+  const [imagesMobile, setImagesMobile] = useState([]);
 
-  // Imagens Mobile (sem a última imagem - orizontal/14.jpg)
-  const imagesMobile = [
-    // Imagens essa1 até essa14
-    { number: 1, src: '/imagem/essa1.jpg' },
-    { number: 2, src: '/imagem/essa2.jpg' },
-    { number: 3, src: '/imagem/essa3.jpg' },
-    { number: 4, src: '/imagem/essa4.jpg' },
-    { number: 5, src: '/imagem/essa5.jpg' },
-    { number: 6, src: '/imagem/essa6.jpg' },
-    { number: 7, src: '/imagem/essa7.jpg' },
-    { number: 8, src: '/imagem/essa8.jpg' },
-    { number: 9, src: '/imagem/essa9.jpg' },
-    { number: 10, src: '/imagem/essa10.jpg' },
-    { number: 11, src: '/imagem/essa11.jpg' },
-    { number: 12, src: '/imagem/essa12.jpg' },
-    { number: 13, src: '/imagem/essa13.jpg' },
-    { number: 14, src: '/imagem/essa14.jpg' },
-    // Imagens numeradas 1 até 14 (verificando pastas vertical e horizontal)
-    { number: 15, src: '/imagem/vertical/1.jpg' },
-    { number: 16, src: '/imagem/vertical/3.jpg' },
-    { number: 18, src: '/imagem/vertical/8.jpg' },
-    { number: 19, src: '/imagem/vertical/9.jpg' },
-    { number: 20, src: '/imagem/vertical/10.jpg' },
-    { number: 21, src: '/imagem/vertical/11.jpg' },
-    { number: 22, src: '/imagem/vertical/14.jpg' },
-    { number: 23, src: '/imagem/orizontal/2.jpg' },
-    { number: 24, src: '/imagem/orizontal/5.jpg' },
-    { number: 25, src: '/imagem/orizontal/6.jpg' },
-    { number: 26, src: '/imagem/orizontal/7.jpg' },
-    { number: 27, src: '/imagem/orizontal/13.jpg' },
-  ];
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    const todasImagens = getGaleriaImagens();
+    setImages(todasImagens);
+    // Mobile: todas as imagens exceto a última
+    setImagesMobile(todasImagens.slice(0, -1));
+  }, []);
+
+  const currentImages = isMobile ? imagesMobile : images;
+
+  const openModal = (image, index) => {
+    setSelectedImage({ ...image, index });
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+    document.body.style.overflow = 'unset';
+  };
+
+  const nextImage = () => {
+    if (selectedImage) {
+      const nextIndex = (selectedImage.index + 1) % currentImages.length;
+      setSelectedImage({ ...currentImages[nextIndex], index: nextIndex });
+    }
+  };
+
+  const prevImage = () => {
+    if (selectedImage) {
+      const prevIndex = selectedImage.index === 0 ? currentImages.length - 1 : selectedImage.index - 1;
+      setSelectedImage({ ...currentImages[prevIndex], index: prevIndex });
+    }
+  };
+
+  useEffect(() => {
+    if (!selectedImage) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      } else if (e.key === 'ArrowRight') {
+        const nextIndex = (selectedImage.index + 1) % currentImages.length;
+        setSelectedImage({ ...currentImages[nextIndex], index: nextIndex });
+      } else if (e.key === 'ArrowLeft') {
+        const prevIndex = selectedImage.index === 0 ? currentImages.length - 1 : selectedImage.index - 1;
+        setSelectedImage({ ...currentImages[prevIndex], index: prevIndex });
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedImage, currentImages]);
+
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
 
   return (
     <>
@@ -85,6 +94,7 @@ export function ImageGallery() {
               <div 
                 key={image.number || index} 
                 className={`masonry-item ${isLastMiddleImage ? 'masonry-item-middle-align' : ''}`}
+                onClick={() => openModal(image, index)}
               >
                 <img
                   src={image.src}
@@ -105,6 +115,7 @@ export function ImageGallery() {
               <div 
                 key={`mobile-${image.number || index}`} 
                 className="masonry-item masonry-item-mobile"
+                onClick={() => openModal(image, index)}
               >
                 <img
                   src={image.src}
@@ -116,6 +127,41 @@ export function ImageGallery() {
           })}
         </div>
       </section>
+
+      {/* Modal Lightbox - Estilo Instagram */}
+      {selectedImage && (
+        <div className="image-modal-overlay" onClick={closeModal}>
+          <div className="image-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="image-modal-close" onClick={closeModal} aria-label="Fechar">
+              <FaTimes />
+            </button>
+            
+            <button 
+              className="image-modal-nav image-modal-nav-prev" 
+              onClick={prevImage}
+              aria-label="Imagem anterior"
+            >
+              <FaChevronLeft />
+            </button>
+            
+            <div className="image-modal-image-container">
+              <img
+                src={selectedImage.src}
+                alt={`Imagem ${selectedImage.number || selectedImage.index}`}
+                className="image-modal-image"
+              />
+            </div>
+            
+            <button 
+              className="image-modal-nav image-modal-nav-next" 
+              onClick={nextImage}
+              aria-label="Próxima imagem"
+            >
+              <FaChevronRight />
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }

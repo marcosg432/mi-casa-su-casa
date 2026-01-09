@@ -22,9 +22,9 @@ const Airbnb = () => {
 
   const suites = [
     { id: 'imperial', nome: 'Suíte Pousada Mi Casa Sua Casa', preco: 249 },
-    { id: 'luxo', nome: 'Suíte Brisa Luxo', preco: 350 },
-    { id: 'premium', nome: 'Suíte Brisa Premium', preco: 450 },
-    { id: 'exclusiva', nome: 'Suíte Brisa Exclusiva', preco: 550 }
+    { id: 'luxo', nome: 'Suíte Mi Casa Luxo', preco: 350 },
+    { id: 'premium', nome: 'Suíte Mi Casa Premium', preco: 450 },
+    { id: 'exclusiva', nome: 'Suíte Mi Casa Exclusiva', preco: 550 }
   ]
 
   const suiteSelecionada = suites.find(s => s.id === formData.quartoId)

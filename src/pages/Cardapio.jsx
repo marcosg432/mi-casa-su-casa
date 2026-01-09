@@ -17,13 +17,11 @@ const Cardapio = () => {
       const mobile = isMobileDevice || isSmallScreen
       setIsMobile(mobile)
       
-      // Carregar dados imediatamente se for mobile
       if (mobile) {
         loadData()
       }
     }
 
-    // Verificar imediatamente
     checkMobile()
     window.addEventListener('resize', checkMobile)
 

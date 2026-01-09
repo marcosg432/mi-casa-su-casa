@@ -109,28 +109,6 @@ const Planilha = () => {
 
         <div className="planilha-tables">
           <div className="planilha-table-container">
-            <h2>Origem das reservas</h2>
-            <table className="planilha-table">
-              <thead>
-                <tr>
-                  <th>Origem</th>
-                  <th>Ocupação</th>
-                  <th>Total Por Quarto</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.entries(origemReservas).map(([origem, dados]) => (
-                  <tr key={origem}>
-                    <td>{origem}</td>
-                    <td>{dados.quantidade}</td>
-                    <td>{formatarMoeda(dados.total)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="planilha-table-container">
             <h2>Origem de ocupação</h2>
             <table className="planilha-table">
               <thead>

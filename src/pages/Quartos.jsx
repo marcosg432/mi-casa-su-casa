@@ -22,33 +22,85 @@ const Quartos = () => {
 
   // Componente de carrossel reutilizável
   const RoomCarousel = ({ images, currentIndex, setCurrentIndex, roomId }) => {
+    const [failedImages, setFailedImages] = useState(new Set())
+
     useEffect(() => {
+      if (images.length === 0) return
+      
+      // Verificar se a imagem atual falhou e pular para próxima válida
+      if (failedImages.has(currentIndex) && images.length > failedImages.size) {
+        let next = (currentIndex + 1) % images.length
+        let attempts = 0
+        while (failedImages.has(next) && attempts < images.length) {
+          next = (next + 1) % images.length
+          attempts++
+        }
+        setCurrentIndex(next)
+        return
+      }
+
       const interval = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % images.length)
+        setCurrentIndex((prev) => {
+          let next = (prev + 1) % images.length
+          // Pula imagens que falharam
+          let attempts = 0
+          while (failedImages.has(next) && attempts < images.length) {
+            next = (next + 1) % images.length
+            attempts++
+          }
+          return next
+        })
       }, 5000)
       return () => clearInterval(interval)
-    }, [images.length])
+    }, [images.length, setCurrentIndex, failedImages, currentIndex])
+
+    const handleImageError = (imageIndex) => {
+      setFailedImages(prev => new Set([...prev, imageIndex]))
+      // Se a imagem atual falhou, vai para a próxima
+      if (imageIndex === currentIndex) {
+        let next = (currentIndex + 1) % images.length
+        let attempts = 0
+        while (failedImages.has(next) && attempts < images.length) {
+          next = (next + 1) % images.length
+          attempts++
+        }
+        setTimeout(() => setCurrentIndex(next), 100)
+      }
+    }
 
     return (
       <div className="quartos-page-card-carousel">
         <div className="quartos-page-card-carousel-images">
-          {images.map((image, index) => (
-            <div
-              key={index}
-              className={`quartos-page-card-carousel-image ${index === currentIndex ? 'active' : ''}`}
-              style={{ backgroundImage: `url(${image})` }}
-            ></div>
-          ))}
+          {images.map((image, index) => {
+            if (failedImages.has(index)) return null
+            return (
+              <div key={index}>
+                <img
+                  src={image}
+                  alt=""
+                  style={{ position: 'absolute', width: 0, height: 0, opacity: 0, pointerEvents: 'none' }}
+                  onError={() => handleImageError(index)}
+                />
+                <div
+                  className={`quartos-page-card-carousel-image ${index === currentIndex ? 'active' : ''}`}
+                  style={{ backgroundImage: `url(${image})` }}
+                ></div>
+              </div>
+            )
+          })}
         </div>
         <div className="quartos-page-card-carousel-dots">
-          {images.map((_, index) => (
-            <button
-              key={index}
-              className={`quartos-page-card-carousel-dot ${index === currentIndex ? 'active' : ''}`}
-              onClick={() => setCurrentIndex(index)}
-              aria-label={`Ir para imagem ${index + 1}`}
-            />
-          ))}
+          {images.map((_, index) => {
+            if (failedImages.has(index)) return null
+            return (
+              <button
+                key={index}
+                className={`quartos-page-card-carousel-dot ${index === currentIndex ? 'active' : ''}`}
+                onClick={() => setCurrentIndex(index)}
+                aria-label={`Ir para imagem ${index + 1}`}
+              />
+            )
+          })}
         </div>
       </div>
     )
@@ -108,7 +160,6 @@ const Quartos = () => {
             <p className="quartos-page-card-description">
               Quarto duplo aconchegante, ideal para casais que buscam conforto e tranquilidade. O ambiente conta com cama de casal, vista para o jardim, terraço e acesso a banheiro compartilhado com chuveiro. Uma opção prática e acolhedora para uma estadia relaxante.
             </p>
-            <div className="quartos-page-card-price">R$ 150 / Noite</div>
             <Link to="/quarto1" className="quartos-page-card-button">saiba mais</Link>
             </div>
           </ScrollReveal>
@@ -129,7 +180,6 @@ const Quartos = () => {
             <p className="quartos-page-card-description">
               Espaçoso quarto família, perfeito para grupos ou famílias que desejam mais conforto. O quarto dispõe de quatro camas de solteiro, ar-condicionado, cozinha compacta privativa e vista para o jardim. Conta ainda com terraço e banheiro compartilhado, garantindo praticidade durante toda a estadia.
             </p>
-            <div className="quartos-page-card-price">R$ 150 / Noite</div>
             <Link to="/quarto2" className="quartos-page-card-button">saiba mais</Link>
             </div>
           </ScrollReveal>
@@ -150,7 +200,6 @@ const Quartos = () => {
             <p className="quartos-page-card-description">
               Ideal para famílias maiores ou grupos de amigos, este quarto oferece amplo espaço e conforto. Possui uma cama de casal e três camas de solteiro, ar-condicionado, cozinha compacta privativa e terraço com vista para o jardim. Banheiro compartilhado disponível para maior praticidade.
             </p>
-            <div className="quartos-page-card-price">R$ 150 / Noite</div>
             <Link to="/quarto3" className="quartos-page-card-button">saiba mais</Link>
             </div>
           </ScrollReveal>
@@ -171,7 +220,6 @@ const Quartos = () => {
             <p className="quartos-page-card-description">
               Quarto duplo confortável, indicado para casais ou viajantes que buscam um ambiente tranquilo. Conta com cama de casal, vista para o jardim, terraço e acesso a banheiro compartilhado com chuveiro. Uma opção simples e agradável para sua hospedagem.
             </p>
-            <div className="quartos-page-card-price">R$ 150 / Noite</div>
             <Link to="/quarto4" className="quartos-page-card-button">saiba mais</Link>
             </div>
           </ScrollReveal>

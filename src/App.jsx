@@ -28,6 +28,7 @@ import Cardapio from './pages/Cardapio'
 import CardapioAdmin from './pages/admin/CardapioAdmin'
 import Booking from './pages/Booking'
 import Airbnb from './pages/Airbnb'
+import GaleriaAdmin from './pages/admin/GaleriaAdmin'
 
 function App() {
   try {
@@ -59,6 +60,7 @@ function App() {
           <Route path="/admin/despesas" element={<Despesas />} />
           <Route path="/admin/planilha" element={<Planilha />} />
           <Route path="/admin/painel-cardapio" element={<PainelCardapio />} />
+          <Route path="/admin/galeria" element={<GaleriaAdmin />} />
           <Route path="/cardapio" element={<Cardapio />} />
           <Route path="/admin/cardapio" element={<CardapioAdmin />} />
           <Route path="/booking" element={<Booking />} />

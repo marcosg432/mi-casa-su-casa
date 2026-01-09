@@ -366,7 +366,8 @@ const Financeiro = () => {
           </div>
         </div>
 
-        <div className="financeiro-grafico-diario">
+        {/* Gráfico diário - Desktop */}
+        <div className="financeiro-grafico-diario financeiro-grafico-diario-desktop">
           <h2>Gráfico de servas diárias</h2>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={dadosDiarios}>
@@ -393,48 +394,38 @@ const Financeiro = () => {
           </ResponsiveContainer>
         </div>
 
-        <div className="financeiro-graficos-circulares">
-          {/* 1️⃣ ORIGEM DAS RESERVAS */}
-          <div className="grafico-circular">
-            <div className="grafico-wrapper">
-              <Doughnut
-                data={{
-                  datasets: [{
-                    data: dadosOrigemArray,
-                    backgroundColor: coresOrigem,
-                    borderWidth: 0
-                  }]
-                }}
-                options={{
-                  cutout: '70%',
-                  plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                      enabled: temOrigem
-                    }
-                  },
-                  maintainAspectRatio: false
-                }}
-              />
-            </div>
-            <h3>Origem de reserva</h3>
-            <div className="grafico-legenda">
-              <div className="legenda-item">
-                <span className="color-box" style={{ background: '#2196f3' }}></span>
-                <span className="legenda-texto">Booking {porcentagemBooking}%</span>
-              </div>
-              <div className="legenda-item">
-                <span className="color-box" style={{ background: '#ff2aa1' }}></span>
-                <span className="legenda-texto">Airbnb {porcentagemAirbnb}%</span>
-              </div>
-              <div className="legenda-item">
-                <span className="color-box" style={{ background: '#00ff00' }}></span>
-                <span className="legenda-texto">Site / WhatsApp {porcentagemSite}%</span>
-              </div>
-            </div>
+        {/* Gráfico diário - Mobile (duplicado, com layout otimizado) */}
+        <div className="financeiro-grafico-diario financeiro-grafico-diario-mobile">
+          <h2>Gráfico de servas diárias</h2>
+          <div className="financeiro-grafico-diario-mobile-wrapper">
+            <ResponsiveContainer width="100%" height={260}>
+              <LineChart data={dadosDiarios}>
+                <XAxis dataKey="dia" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line 
+                  type="linear" 
+                  dataKey="reservas" 
+                  stroke={temReservasNoGrafico ? COLORS.blue : COLORS.gray} 
+                  name="Reservas" 
+                  dot={false} 
+                />
+                <Line 
+                  type="linear" 
+                  dataKey="faturamento" 
+                  stroke={faturamentoTotal > 0 ? COLORS.blue : COLORS.gray} 
+                  name="Faturamento" 
+                  dot={false} 
+                  strokeWidth={4}
+                />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
+        </div>
 
-          {/* 2️⃣ RESERVAS */}
+        <div className="financeiro-graficos-circulares">
+          {/* RESERVAS */}
           <div className="grafico-circular">
             <div className="grafico-wrapper">
               <Doughnut

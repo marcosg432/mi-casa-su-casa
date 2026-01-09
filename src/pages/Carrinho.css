@@ -40,14 +40,64 @@
   width: 100%;
 }
 
-.carrinho-image-placeholder {
+.carrinho-image-carousel {
+  position: relative;
   width: 100%;
   height: 400px;
-  background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
-  background-image: url('https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800');
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.carrinho-image-carousel-images {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.carrinho-image-carousel-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
-  border-radius: 15px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.carrinho-image-carousel-image.active {
+  opacity: 1;
+}
+
+.carrinho-image-carousel-dots {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.carrinho-image-carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+  padding: 0;
+}
+
+.carrinho-image-carousel-dot.active {
+  background: white;
+  transform: scale(1.2);
+}
+
+.carrinho-image-carousel-dot:hover {
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .carrinho-amenities {

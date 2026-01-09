@@ -8,8 +8,8 @@ const Galeria = () => {
         <div className="galeria-hero-background"></div>
         <Header />
         <div className="galeria-hero-content">
-          <h1 className="galeria-hero-title">Brisa Azul</h1>
-          <p className="galeria-hero-subtitle">RESORT & SPA HOTEL</p>
+          <h1 className="galeria-hero-title">Mi Casa Su Casa</h1>
+          <p className="galeria-hero-subtitle">POUSADA & RESTAURANTE</p>
         </div>
       </section>
 

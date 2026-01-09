@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react'
-import { FaSun, FaWater, FaStar, FaHeart, FaUmbrellaBeach, FaPlay, FaPause, FaVolumeUp, FaVolumeDown, FaVolumeMute, FaWifi, FaEye, FaHome, FaSnowflake, FaUtensils } from 'react-icons/fa'
+import { FaPlay, FaPause, FaVolumeUp, FaVolumeDown, FaVolumeMute, FaWifi, FaEye, FaHome, FaSnowflake, FaUtensils, FaBox, FaWind } from 'react-icons/fa'
 import Header from '../components/Header'
 import { VerticalImageStack } from '../components/VerticalImageStack'
 import CircularImages from '../components/CircularImages'
 import Footer from '../components/Footer'
 import ScrollReveal from '../components/ScrollReveal'
+import { getQuartoImages } from '../utils/quartosImages'
 import './Home.css'
 
 const Home = () => {
@@ -13,16 +14,124 @@ const Home = () => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [volume, setVolume] = useState(1)
   const [isMuted, setIsMuted] = useState(false)
-  const videoRef = useRef(null)
+  const videoRefDesktop = useRef(null)
+  const videoRefMobile = useRef(null)
+  
+  // Função para obter o vídeo ativo (visível)
+  const getActiveVideo = () => {
+    if (window.innerWidth > 768) {
+      return videoRefDesktop.current
+    } else {
+      return videoRefMobile.current
+    }
+  }
+
+  // Imagens de cada quarto
+  const quarto1Images = getQuartoImages('quarto1')
+  const quarto2Images = getQuartoImages('quarto2')
+  const quarto4Images = getQuartoImages('quarto4')
+
+  // Estados para cada carrossel
+  const [currentImage1, setCurrentImage1] = useState(0)
+  const [currentImage2, setCurrentImage2] = useState(0)
+  const [currentImage4, setCurrentImage4] = useState(0)
+
+  // Componente de carrossel reutilizável
+  const RoomCarousel = ({ images, currentIndex, setCurrentIndex, roomId }) => {
+    const [failedImages, setFailedImages] = useState(new Set())
+
+    useEffect(() => {
+      if (images.length === 0) return
+      
+      // Verificar se a imagem atual falhou e pular para próxima válida
+      if (failedImages.has(currentIndex) && images.length > failedImages.size) {
+        let next = (currentIndex + 1) % images.length
+        let attempts = 0
+        while (failedImages.has(next) && attempts < images.length) {
+          next = (next + 1) % images.length
+          attempts++
+        }
+        setCurrentIndex(next)
+        return
+      }
+
+      const interval = setInterval(() => {
+        setCurrentIndex((prev) => {
+          let next = (prev + 1) % images.length
+          // Pula imagens que falharam
+          let attempts = 0
+          while (failedImages.has(next) && attempts < images.length) {
+            next = (next + 1) % images.length
+            attempts++
+          }
+          return next
+        })
+      }, 5000)
+      return () => clearInterval(interval)
+    }, [images.length, setCurrentIndex, failedImages, currentIndex])
+
+    const handleImageError = (imageIndex) => {
+      setFailedImages(prev => new Set([...prev, imageIndex]))
+      // Se a imagem atual falhou, vai para a próxima
+      if (imageIndex === currentIndex) {
+        let next = (currentIndex + 1) % images.length
+        let attempts = 0
+        while (failedImages.has(next) && attempts < images.length) {
+          next = (next + 1) % images.length
+          attempts++
+        }
+        setTimeout(() => setCurrentIndex(next), 100)
+      }
+    }
+
+    return (
+      <div className="quartos-page-card-carousel">
+        <div className="quartos-page-card-carousel-images">
+          {images.map((image, index) => {
+            if (failedImages.has(index)) return null
+            return (
+              <div key={index}>
+                <img
+                  src={image}
+                  alt=""
+                  style={{ position: 'absolute', width: 0, height: 0, opacity: 0, pointerEvents: 'none' }}
+                  onError={() => handleImageError(index)}
+                />
+                <div
+                  className={`quartos-page-card-carousel-image ${index === currentIndex ? 'active' : ''}`}
+                  style={{ backgroundImage: `url(${image})` }}
+                ></div>
+              </div>
+            )
+          })}
+        </div>
+        <div className="quartos-page-card-carousel-dots">
+          {images.map((_, index) => {
+            if (failedImages.has(index)) return null
+            return (
+              <button
+                key={index}
+                className={`quartos-page-card-carousel-dot ${index === currentIndex ? 'active' : ''}`}
+                onClick={() => setCurrentIndex(index)}
+                aria-label={`Ir para imagem ${index + 1}`}
+              />
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
 
   useEffect(() => {
-    const video = videoRef.current
-    if (video) {
+    const setupVideo = (video) => {
+      if (!video) return null
+      
       const handlePlay = () => setIsPlaying(true)
       const handlePause = () => setIsPlaying(false)
-      
-      video.addEventListener('play', handlePlay)
-      video.addEventListener('pause', handlePause)
+      const handleError = (e) => {
+        console.error('Erro ao carregar vídeo:', e)
+        console.error('Caminho do vídeo:', video.src)
+      }
       
       // Inicializar volume e garantir que não está mudo
       video.volume = volume
@@ -37,46 +146,96 @@ const Home = () => {
         // Garantir que o vídeo não está mudo
         video.muted = false
         video.volume = volume
-        // Não tentar tocar automaticamente - o usuário deve clicar
       }
       
+      video.addEventListener('play', handlePlay)
+      video.addEventListener('pause', handlePause)
+      video.addEventListener('error', handleError)
       video.addEventListener('loadedmetadata', handleLoadedMetadata)
-      
-      // Salvar tempo do vídeo periodicamente
-      const saveTimeInterval = setInterval(() => {
-        if (video && !video.paused) {
-          localStorage.setItem('videoTime', video.currentTime.toString())
-        }
-      }, 1000)
       
       return () => {
         video.removeEventListener('play', handlePlay)
         video.removeEventListener('pause', handlePause)
+        video.removeEventListener('error', handleError)
         video.removeEventListener('loadedmetadata', handleLoadedMetadata)
-        clearInterval(saveTimeInterval)
-        // Salvar tempo final quando sair da página
-        if (video) {
-          localStorage.setItem('videoTime', video.currentTime.toString())
-        }
       }
     }
-  }, [])
+    
+    const cleanup1 = setupVideo(videoRefDesktop.current)
+    const cleanup2 = setupVideo(videoRefMobile.current)
+    
+    // Salvar tempo do vídeo periodicamente
+    const saveTimeInterval = setInterval(() => {
+      const video = getActiveVideo()
+      if (video && !video.paused) {
+        localStorage.setItem('videoTime', video.currentTime.toString())
+      }
+    }, 1000)
+    
+    return () => {
+      if (cleanup1) cleanup1()
+      if (cleanup2) cleanup2()
+      clearInterval(saveTimeInterval)
+      const video = getActiveVideo()
+      if (video) {
+        localStorage.setItem('videoTime', video.currentTime.toString())
+      }
+    }
+  }, [volume])
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.volume = isMuted ? 0 : volume
+    if (videoRefDesktop.current) {
+      videoRefDesktop.current.volume = isMuted ? 0 : volume
+    }
+    if (videoRefMobile.current) {
+      videoRefMobile.current.volume = isMuted ? 0 : volume
     }
   }, [volume, isMuted])
 
-  const togglePlayPause = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause()
-      } else {
-        // Garantir que o vídeo não está mudo ao tocar
-        videoRef.current.muted = false
-        videoRef.current.volume = volume
-        videoRef.current.play()
+  const togglePlayPause = (e) => {
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    
+    const activeVideo = getActiveVideo()
+    if (!activeVideo) return
+    
+    // Sincronizar ambos os vídeos
+    const videos = [videoRefDesktop.current, videoRefMobile.current].filter(Boolean)
+    
+    if (isPlaying) {
+      // Pausar todos os vídeos
+      videos.forEach(video => {
+        if (video && !video.paused) {
+          video.pause()
+        }
+      })
+    } else {
+      // Tocar o vídeo ativo e sincronizar o outro
+      videos.forEach(video => {
+        if (video) {
+          video.muted = false
+          video.volume = volume
+          
+          // Sincronizar tempo
+          if (activeVideo.readyState >= 2) {
+            video.currentTime = activeVideo.currentTime
+          }
+        }
+      })
+      
+      // Tocar o vídeo ativo
+      const playPromise = activeVideo.play()
+      
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            // Vídeo está tocando
+          })
+          .catch((error) => {
+            console.error('Erro ao tocar vídeo:', error)
+          })
       }
     }
   }
@@ -150,50 +309,51 @@ const Home = () => {
           <div className="sobre-image">
             <div className="sobre-video-wrapper">
               <div className="sobre-video-background">
-                <img
-                  src="/imagem/textura verde.png"
-                  alt="Textura verde"
+                <img 
+                  src="/imagem/textura verde.png" 
+                  alt="Textura" 
                   className="sobre-textura-verde"
                 />
               </div>
               <video
-                ref={videoRef}
+                ref={videoRefDesktop}
                 className="sobre-video"
                 loop
                 playsInline
+                preload="metadata"
                 onClick={togglePlayPause}
               >
                 <source src="/video/mi casa.mp4" type="video/mp4" />
               </video>
               {!isPlaying && (
-                <button 
-                  className="sobre-video-control"
-                  onClick={togglePlayPause}
-                  aria-label="Reproduzir vídeo"
-                >
-                  <FaPlay />
-                </button>
-              )}
-              {!isPlaying && (
-                <div className="sobre-video-volume-control">
+                <>
                   <button 
-                    className="sobre-video-volume-button"
-                    onClick={toggleMute}
-                    aria-label={isMuted ? 'Ativar som' : 'Desativar som'}
+                    className="sobre-video-control"
+                    onClick={togglePlayPause}
+                    aria-label="Tocar vídeo"
                   >
-                    {getVolumeIcon()}
+                    <FaPlay />
                   </button>
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    value={isMuted ? 0 : volume}
-                    onChange={handleVolumeChange}
-                    className="sobre-video-volume-slider"
-                    aria-label="Volume"
-                  />
-                </div>
+                  <div className="sobre-video-volume-control">
+                    <button 
+                      className="sobre-video-volume-button"
+                      onClick={toggleMute}
+                      aria-label={isMuted ? 'Ativar som' : 'Desativar som'}
+                    >
+                      {getVolumeIcon()}
+                    </button>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      value={volume}
+                      onChange={handleVolumeChange}
+                      className="sobre-video-volume-slider"
+                      aria-label="Volume"
+                    />
+                  </div>
+                </>
               )}
             </div>
           </div>
@@ -221,50 +381,51 @@ const Home = () => {
           <div className="sobre-image">
             <div className="sobre-video-wrapper">
               <div className="sobre-video-background">
-                <img
-                  src="/imagem/textura verde.png"
-                  alt="Textura verde"
+                <img 
+                  src="/imagem/textura verde.png" 
+                  alt="Textura" 
                   className="sobre-textura-verde"
                 />
               </div>
               <video
-                ref={videoRef}
+                ref={videoRefMobile}
                 className="sobre-video"
                 loop
                 playsInline
+                preload="metadata"
                 onClick={togglePlayPause}
               >
                 <source src="/video/mi casa.mp4" type="video/mp4" />
               </video>
               {!isPlaying && (
-                <button 
-                  className="sobre-video-control"
-                  onClick={togglePlayPause}
-                  aria-label="Reproduzir vídeo"
-                >
-                  <FaPlay />
-                </button>
-              )}
-              {!isPlaying && (
-                <div className="sobre-video-volume-control">
+                <>
                   <button 
-                    className="sobre-video-volume-button"
-                    onClick={toggleMute}
-                    aria-label={isMuted ? 'Ativar som' : 'Desativar som'}
+                    className="sobre-video-control"
+                    onClick={togglePlayPause}
+                    aria-label="Tocar vídeo"
                   >
-                    {getVolumeIcon()}
+                    <FaPlay />
                   </button>
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    value={isMuted ? 0 : volume}
-                    onChange={handleVolumeChange}
-                    className="sobre-video-volume-slider"
-                    aria-label="Volume"
-                  />
-                </div>
+                  <div className="sobre-video-volume-control">
+                    <button 
+                      className="sobre-video-volume-button"
+                      onClick={toggleMute}
+                      aria-label={isMuted ? 'Ativar som' : 'Desativar som'}
+                    >
+                      {getVolumeIcon()}
+                    </button>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      value={volume}
+                      onChange={handleVolumeChange}
+                      className="sobre-video-volume-slider"
+                      aria-label="Volume"
+                    />
+                  </div>
+                </>
               )}
             </div>
           </div>
@@ -278,7 +439,32 @@ const Home = () => {
         <div className="quartos-container">
           <ScrollReveal delay={0.1}>
             <div className="quartos-card">
-            <div className="quartos-card-image quarto1"></div>
+            <RoomCarousel 
+              images={quarto4Images} 
+              currentIndex={currentImage4} 
+              setCurrentIndex={setCurrentImage4}
+              roomId="quarto4"
+            />
+            <div className="quartos-card-icons">
+              <span className="quartos-card-icon"><FaBox /></span>
+              <span className="quartos-card-icon"><FaWind /></span>
+              <span className="quartos-card-icon"><FaWifi /></span>
+            </div>
+            <h3 className="quartos-card-title">Ararajuba</h3>
+            <p className="quartos-card-description">
+              Quarto duplo confortável, indicado para casais ou viajantes que buscam um ambiente tranquilo.
+            </p>
+            <Link to="/quarto4" className="quartos-card-button">saiba mais</Link>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal delay={0.2}>
+            <div className="quartos-card">
+            <RoomCarousel 
+              images={quarto1Images} 
+              currentIndex={currentImage1} 
+              setCurrentIndex={setCurrentImage1}
+              roomId="quarto1"
+            />
             <div className="quartos-card-icons">
               <span className="quartos-card-icon"><FaWifi /></span>
               <span className="quartos-card-icon"><FaEye /></span>
@@ -288,13 +474,17 @@ const Home = () => {
             <p className="quartos-card-description">
               Quarto duplo aconchegante, ideal para casais que buscam conforto e tranquilidade.
             </p>
-            <div className="quartos-card-price">R$ 150 / Noite</div>
             <Link to="/quarto1" className="quartos-card-button">saiba mais</Link>
             </div>
           </ScrollReveal>
-          <ScrollReveal delay={0.2}>
+          <ScrollReveal delay={0.3}>
             <div className="quartos-card">
-            <div className="quartos-card-image quarto2"></div>
+            <RoomCarousel 
+              images={quarto2Images} 
+              currentIndex={currentImage2} 
+              setCurrentIndex={setCurrentImage2}
+              roomId="quarto2"
+            />
             <div className="quartos-card-icons">
               <span className="quartos-card-icon"><FaSnowflake /></span>
               <span className="quartos-card-icon"><FaWifi /></span>
@@ -304,24 +494,7 @@ const Home = () => {
             <p className="quartos-card-description">
               Espaçoso quarto família, perfeito para grupos ou famílias que desejam mais conforto.
             </p>
-            <div className="quartos-card-price">R$ 150 / Noite</div>
             <Link to="/quarto2" className="quartos-card-button">saiba mais</Link>
-            </div>
-          </ScrollReveal>
-          <ScrollReveal delay={0.3}>
-            <div className="quartos-card">
-            <div className="quartos-card-image quarto3"></div>
-            <div className="quartos-card-icons">
-              <span className="quartos-card-icon"><FaSnowflake /></span>
-              <span className="quartos-card-icon"><FaWifi /></span>
-              <span className="quartos-card-icon"><FaUtensils /></span>
-            </div>
-            <h3 className="quartos-card-title">Sabia</h3>
-            <p className="quartos-card-description">
-              Ideal para famílias maiores ou grupos de amigos, este quarto oferece amplo espaço e conforto.
-            </p>
-            <div className="quartos-card-price">R$ 150 / Noite</div>
-            <Link to="/quarto3" className="quartos-card-button">saiba mais</Link>
             </div>
           </ScrollReveal>
         </div>
@@ -334,7 +507,32 @@ const Home = () => {
         <div className="quartos-container">
           <ScrollReveal delay={0.1}>
             <div className="quartos-card">
-            <div className="quartos-card-image quarto1"></div>
+            <RoomCarousel 
+              images={quarto4Images} 
+              currentIndex={currentImage4} 
+              setCurrentIndex={setCurrentImage4}
+              roomId="quarto4"
+            />
+            <div className="quartos-card-icons">
+              <span className="quartos-card-icon"><FaBox /></span>
+              <span className="quartos-card-icon"><FaWind /></span>
+              <span className="quartos-card-icon"><FaWifi /></span>
+            </div>
+            <h3 className="quartos-card-title">Ararajuba</h3>
+            <p className="quartos-card-description">
+              Quarto duplo confortável, indicado para casais ou viajantes que buscam um ambiente tranquilo.
+            </p>
+            <Link to="/quarto4" className="quartos-card-button">saiba mais</Link>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal delay={0.2}>
+            <div className="quartos-card">
+            <RoomCarousel 
+              images={quarto1Images} 
+              currentIndex={currentImage1} 
+              setCurrentIndex={setCurrentImage1}
+              roomId="quarto1"
+            />
             <div className="quartos-card-icons">
               <span className="quartos-card-icon"><FaWifi /></span>
               <span className="quartos-card-icon"><FaEye /></span>
@@ -344,13 +542,17 @@ const Home = () => {
             <p className="quartos-card-description">
               Quarto duplo aconchegante, ideal para casais que buscam conforto e tranquilidade.
             </p>
-            <div className="quartos-card-price">R$ 150 / Noite</div>
             <Link to="/quarto1" className="quartos-card-button">saiba mais</Link>
             </div>
           </ScrollReveal>
-          <ScrollReveal delay={0.2}>
+          <ScrollReveal delay={0.3}>
             <div className="quartos-card">
-            <div className="quartos-card-image quarto2"></div>
+            <RoomCarousel 
+              images={quarto2Images} 
+              currentIndex={currentImage2} 
+              setCurrentIndex={setCurrentImage2}
+              roomId="quarto2"
+            />
             <div className="quartos-card-icons">
               <span className="quartos-card-icon"><FaSnowflake /></span>
               <span className="quartos-card-icon"><FaWifi /></span>
@@ -360,24 +562,7 @@ const Home = () => {
             <p className="quartos-card-description">
               Espaçoso quarto família, perfeito para grupos ou famílias que desejam mais conforto.
             </p>
-            <div className="quartos-card-price">R$ 150 / Noite</div>
             <Link to="/quarto2" className="quartos-card-button">saiba mais</Link>
-            </div>
-          </ScrollReveal>
-          <ScrollReveal delay={0.3}>
-            <div className="quartos-card">
-            <div className="quartos-card-image quarto3"></div>
-            <div className="quartos-card-icons">
-              <span className="quartos-card-icon"><FaSnowflake /></span>
-              <span className="quartos-card-icon"><FaWifi /></span>
-              <span className="quartos-card-icon"><FaUtensils /></span>
-            </div>
-            <h3 className="quartos-card-title">Sabia</h3>
-            <p className="quartos-card-description">
-              Ideal para famílias maiores ou grupos de amigos, este quarto oferece amplo espaço e conforto.
-            </p>
-            <div className="quartos-card-price">R$ 150 / Noite</div>
-            <Link to="/quarto3" className="quartos-card-button">saiba mais</Link>
             </div>
           </ScrollReveal>
         </div>

@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import { FaSnowflake, FaLock, FaWifi, FaBriefcase, FaTv } from 'react-icons/fa'
 import Header from '../components/Header'
 import { getCarrinho, formatarMoeda } from '../utils/storage'
+import { getQuartoImages } from '../utils/quartosImages'
 import './Carrinho.css'
 
 const Carrinho = () => {
   const navigate = useNavigate()
   const [carrinho, setCarrinho] = useState(null)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   useEffect(() => {
     const carrinhoData = getCarrinho()
@@ -20,13 +22,49 @@ const Carrinho = () => {
 
   if (!carrinho) return null
 
+  // Obter todas as imagens do quarto selecionado
+  const quartoImages = carrinho.quartoId ? getQuartoImages(carrinho.quartoId) : []
+  const fallbackImage = 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800'
+  const images = quartoImages.length > 0 ? quartoImages : [fallbackImage]
+
+  // Autoplay do carrossel
+  useEffect(() => {
+    if (images.length <= 1) return
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length)
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [images.length])
+
   return (
     <div className="carrinho-page">
       <Header />
       <div className="carrinho-container">
         <div className="carrinho-left">
           <div className="carrinho-image">
-            <div className="carrinho-image-placeholder"></div>
+            <div className="carrinho-image-carousel">
+              <div className="carrinho-image-carousel-images">
+                {images.map((image, index) => (
+                  <div
+                    key={index}
+                    className={`carrinho-image-carousel-image ${index === currentImageIndex ? 'active' : ''}`}
+                    style={{ backgroundImage: `url(${image})` }}
+                  ></div>
+                ))}
+              </div>
+              {images.length > 1 && (
+                <div className="carrinho-image-carousel-dots">
+                  {images.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`carrinho-image-carousel-dot ${index === currentImageIndex ? 'active' : ''}`}
+                      onClick={() => setCurrentImageIndex(index)}
+                      aria-label={`Ir para imagem ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
           <div className="carrinho-amenities">
             <div className="carrinho-amenity-item">

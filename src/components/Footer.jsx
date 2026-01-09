@@ -39,7 +39,7 @@ const Footer = () => {
 
           <div className="home-footer-right">
             <div className="home-footer-contact">
-              <p className="home-footer-phone">(91) 98206-5128</p>
+              <p className="home-footer-phone">91 8078-1514</p>
               <p className="home-footer-email">micasasucasaben@gmail.com</p>
             </div>
             <div className="home-footer-social">
@@ -62,7 +62,7 @@ const Footer = () => {
                 <FaFacebook />
               </a>
               <a 
-                href="https://wa.me/5591982065128" 
+                href="https://wa.me/559180781514" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="home-footer-social-icon"
@@ -103,7 +103,7 @@ const Footer = () => {
           {/* Contato, Redes Sociais e Botão */}
           <div className="home-footer-bottom-mobile">
             <div className="home-footer-contact-mobile">
-              <p className="home-footer-phone-mobile">(91) 98206-5128</p>
+              <p className="home-footer-phone-mobile">91 8078-1514</p>
               <p className="home-footer-email-mobile">micasasucasaben@gmail.com</p>
             </div>
             <div className="home-footer-social-mobile">
@@ -126,7 +126,7 @@ const Footer = () => {
                 <FaFacebook />
               </a>
               <a 
-                href="https://wa.me/5591982065128" 
+                href="https://wa.me/559180781514" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="home-footer-social-icon-mobile"

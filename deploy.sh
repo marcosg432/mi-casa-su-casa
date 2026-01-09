@@ -5,7 +5,7 @@
 # Portas bloqueadas: 3001, 3002, 3003, 3004, 3005
 # Alternativa: 3006 (se 3000 estiver ocupada)
 
-echo "🚀 Iniciando deploy do Brisa Azul na Hostinger..."
+echo "🚀 Iniciando deploy do Mi Casa Su Casa na Hostinger..."
 
 # Cores para output
 GREEN='\033[0;32m'
@@ -38,7 +38,7 @@ mkdir -p logs
 # Parar PM2 se já estiver rodando
 echo -e "${YELLOW}🛑 Parando instâncias anteriores do PM2...${NC}"
 pm2 delete mi-casa-su-casa 2>/dev/null || true
-pm2 delete brisa-azul 2>/dev/null || true
+pm2 delete mi-casa-su-casa 2>/dev/null || true
 
 # Iniciar com PM2
 echo -e "${YELLOW}▶️  Iniciando aplicação com PM2 na porta 3000...${NC}"

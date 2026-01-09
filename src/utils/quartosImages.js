@@ -39,7 +39,6 @@ export const getQuartoImages = (quartoId) => {
       '/fotos_dos_quartos/quarto_duplo/649ff996-e316-4fa2-94f0-6b7169eef796.jpg',
       '/fotos_dos_quartos/quarto_duplo/69dcd418-4fd5-4e0f-904e-2f15b4ad29a9.jpg',
       '/fotos_dos_quartos/quarto_duplo/70e05b71-e628-4e87-a108-31ab8d696e2c.jpg',
-      '/fotos_dos_quartos/quarto_duplo/7453ce3a-62db-4466-aff7-5c2532a38dbf.jpg',
       '/fotos_dos_quartos/quarto_duplo/a5c7cd38-4cb0-435f-944c-bf5700615e27.jpg',
       '/fotos_dos_quartos/quarto_duplo/a921caca-e9f0-4597-888e-eec9d5241592.jpg',
       '/fotos_dos_quartos/quarto_duplo/b00af959-61c0-4233-95fc-1176ee4147f0.jpg',

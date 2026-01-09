@@ -1,6 +1,6 @@
-# Brisa Azul - Resort & Spa Hotel
+# Mi Casa Su Casa - Pousada & Restaurante
 
-Site completo para o Resort & Spa Hotel Brisa Azul, incluindo sistema de reservas funcional e painel administrativo.
+Site completo para a Pousada & Restaurante Mi Casa Su Casa, incluindo sistema de reservas funcional e painel administrativo.
 
 ## 🚀 Tecnologias
 
@@ -37,10 +37,10 @@ O site estará disponível em `http://localhost:5173`
 
 ### Páginas de Suítes
 
-- **/suite-imperial** - Suíte Brisa Imperial (R$ 249/noite)
-- **/suite-luxo** - Suíte Brisa Luxo (R$ 350/noite)
-- **/suite-premium** - Suíte Brisa Premium (R$ 450/noite)
-- **/suite-exclusiva** - Suíte Brisa Exclusiva (R$ 550/noite)
+- **/suite-imperial** - Suíte Mi Casa Imperial (R$ 249/noite)
+- **/suite-luxo** - Suíte Mi Casa Luxo (R$ 350/noite)
+- **/suite-premium** - Suíte Mi Casa Premium (R$ 450/noite)
+- **/suite-exclusiva** - Suíte Mi Casa Exclusiva (R$ 550/noite)
 
 ### Sistema de Reservas
 
